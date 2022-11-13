@@ -39,7 +39,7 @@ export type PropsOf<
 
 export const styled = <V extends variantsType, E extends React.ElementType>(
   element: E,
-  baseClassName: string | string[],
+  baseClassName?: string | string[],
   variants?: V,
   compoundVariants?: compoundVariantType[]
 ) => {
@@ -56,9 +56,10 @@ export const styled = <V extends variantsType, E extends React.ElementType>(
       if (ref) componentProps.ref = ref;
 
       // Add the base style(s)
-      componentStyles.push(
-        Array.isArray(baseClassName) ? baseClassName.join(" ") : baseClassName
-      );
+      if (baseClassName)
+        componentStyles.push(
+          Array.isArray(baseClassName) ? baseClassName.join(" ") : baseClassName
+        );
 
       // Apply any variant styles
       Object.keys(props).forEach((key) => {
