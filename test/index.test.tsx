@@ -8,7 +8,7 @@ import { render } from "@testing-library/react";
 
 import { styled } from "../src";
 
-describe("performs requests", () => {
+describe("creates basic components", () => {
   it("should should output the correct DOM node", async () => {
     const Button = styled("button");
     const { container } = render(<Button />);
@@ -26,7 +26,8 @@ describe("performs requests", () => {
     const { container } = render(<Paragraph>Hello</Paragraph>);
     expect(container.firstChild).toHaveTextContent("Hello");
   });
-
+});
+describe("supports variants and compound variants", () => {
   it("should work with a single boolean variant but not set", async () => {
     const Button = styled("button", "root", {
       primary: { true: "primary" },
