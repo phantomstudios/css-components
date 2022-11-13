@@ -27,6 +27,7 @@ describe("creates basic components", () => {
     expect(container.firstChild).toHaveTextContent("Hello");
   });
 });
+
 describe("supports variants and compound variants", () => {
   it("should work with a single boolean variant but not set", async () => {
     const Button = styled("button", "root", {
@@ -105,5 +106,23 @@ describe("supports variants and compound variants", () => {
     expect(container.firstChild).toHaveClass("borderPrimary");
     expect(container.firstChild).not.toHaveClass("borderSecondary");
     expect(container.firstChild).not.toHaveClass("colorSecondary");
+  });
+});
+
+describe("supports more exotic setups", () => {
+  it("should be able to style custom react components", async () => {
+    const BaseButton = styled("button", "baseButton", {
+      size: { big: "big", small: "small" },
+    });
+    const Button = styled(BaseButton, "button", {
+      color: { primary: "colorPrimary", secondary: "colorSecondary" },
+    });
+    const { container } = render(<Button size="big" color="primary" />);
+
+    expect(container.firstChild?.nodeName).toEqual("BUTTON");
+    expect(container.firstChild).toHaveClass("baseButton");
+    expect(container.firstChild).toHaveClass("button");
+    expect(container.firstChild).toHaveClass("big");
+    expect(container.firstChild).toHaveClass("colorPrimary");
   });
 });
