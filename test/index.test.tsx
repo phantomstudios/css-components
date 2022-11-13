@@ -8,23 +8,30 @@ import { render } from "@testing-library/react";
 
 import { styled } from "../src";
 
-describe("creates basic components", () => {
-  it("should should output the correct DOM node", async () => {
+describe("Basic functionality", () => {
+  it("it should output the correct type of DOM node", async () => {
     const Button = styled("button");
     const { container } = render(<Button />);
     expect(container.firstChild?.nodeName).toEqual("BUTTON");
   });
 
-  it("should should apply the base class", async () => {
-    const Button = styled("button", "basicButton");
+  it("it should apply the base class", async () => {
+    const Button = styled("button", "root");
     const { container } = render(<Button />);
-    expect(container.firstChild).toHaveClass("basicButton");
+    expect(container.firstChild).toHaveClass("root");
   });
 
   it("should pass through children", async () => {
     const Paragraph = styled("p");
     const { container } = render(<Paragraph>Hello</Paragraph>);
     expect(container.firstChild).toHaveTextContent("Hello");
+  });
+
+  it("should pass provide typescript support for built in types", async () => {
+    const Input = styled("input");
+    const onChange = jest.fn();
+    const { container } = render(<Input value={"test"} onChange={onChange} />);
+    expect(container.firstChild).toHaveAttribute("value", "test");
   });
 });
 
@@ -109,8 +116,43 @@ describe("supports variants and compound variants", () => {
   });
 });
 
+describe("supports array styles", () => {
+  it("should should apply the base classes", async () => {
+    const Button = styled("button", ["baseButton", "button"]);
+    const { container } = render(<Button />);
+    expect(container.firstChild).toHaveClass("baseButton");
+    expect(container.firstChild).toHaveClass("button");
+  });
+
+  it("should should apply the base classes", async () => {
+    const Button = styled(
+      "button",
+      ["baseButton", "button"],
+      {
+        primary: { true: ["primary", "bold"] },
+        big: { true: ["big"] },
+      },
+      [
+        {
+          primary: true,
+          big: true,
+          css: ["primaryBig", "primaryBigBold"],
+        },
+      ]
+    );
+    const { container } = render(<Button primary big />);
+    expect(container.firstChild).toHaveClass("baseButton");
+    expect(container.firstChild).toHaveClass("button");
+    expect(container.firstChild).toHaveClass("primary");
+    expect(container.firstChild).toHaveClass("bold");
+    expect(container.firstChild).toHaveClass("big");
+    expect(container.firstChild).toHaveClass("primaryBig");
+    expect(container.firstChild).toHaveClass("primaryBigBold");
+  });
+});
+
 describe("supports more exotic setups", () => {
-  it("should be able to style custom react components", async () => {
+  it("should be able to style nested react components", async () => {
     const BaseButton = styled("button", "baseButton", {
       size: { big: "big", small: "small" },
     });
@@ -124,5 +166,13 @@ describe("supports more exotic setups", () => {
     expect(container.firstChild).toHaveClass("button");
     expect(container.firstChild).toHaveClass("big");
     expect(container.firstChild).toHaveClass("colorPrimary");
+  });
+
+  it("should pass down refs", async () => {
+    const Button = styled("button");
+    const ref = jest.fn();
+    const { container } = render(<Button ref={ref} />);
+    expect(container.firstChild?.nodeName).toEqual("BUTTON");
+    expect(ref).toBeCalled();
   });
 });
