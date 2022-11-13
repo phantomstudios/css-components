@@ -89,7 +89,6 @@ const styled = <V extends variantsType, E extends React.ElementType>(
 
       componentProps.className = componentStyles.join(" ");
       styledComponent.displayName = element.toString();
-      console.log(styledComponent.displayName);
       return createElement(element, componentProps);
     }
   );
