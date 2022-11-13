@@ -37,7 +37,7 @@ export type PropsOf<
   C extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>
 > = JSX.LibraryManagedAttributes<C, React.ComponentPropsWithoutRef<C>>;
 
-const styled = <V extends variantsType, E extends React.ElementType>(
+export const styled = <V extends variantsType, E extends React.ElementType>(
   element: E,
   baseClassName: string | string[],
   variants?: V,
@@ -99,5 +99,3 @@ const styled = <V extends variantsType, E extends React.ElementType>(
     }
   >;
 };
-
-export default styled;
