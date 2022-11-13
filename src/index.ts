@@ -1,11 +1,11 @@
 import { createElement, forwardRef } from "react";
 
-type variantValue = string | number | boolean;
+type variantValue = string | number | boolean | string[];
 
 // An object of variants, and how they map to CSS styles
-type variantsType = {
+type variantsType = Partial<{
   [key: string]: { [key: string | number]: string | string[] };
-};
+}>;
 
 type compoundVariantType = {
   [key: string]: variantValue;
@@ -37,9 +37,12 @@ export type PropsOf<
   C extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>
 > = JSX.LibraryManagedAttributes<C, React.ComponentPropsWithoutRef<C>>;
 
-export const styled = <V extends variantsType, E extends React.ElementType>(
+export const styled = <
+  V extends variantsType | object,
+  E extends React.ElementType
+>(
   element: E,
-  baseClassName: string | string[],
+  baseClassName?: string | string[],
   variants?: V,
   compoundVariants?: compoundVariantType[]
 ) => {
@@ -56,15 +59,19 @@ export const styled = <V extends variantsType, E extends React.ElementType>(
       if (ref) componentProps.ref = ref;
 
       // Add the base style(s)
-      componentStyles.push(
-        Array.isArray(baseClassName) ? baseClassName.join(" ") : baseClassName
-      );
+      if (baseClassName)
+        componentStyles.push(
+          Array.isArray(baseClassName) ? baseClassName.join(" ") : baseClassName
+        );
 
       // Apply any variant styles
       Object.keys(props).forEach((key) => {
         if (variants && variants.hasOwnProperty(key)) {
-          if (variants[key].hasOwnProperty(props[key])) {
-            const selector = variants[key][props[key]];
+          const variant = variants[key as keyof typeof variants];
+          if (variant && variant.hasOwnProperty(props[key])) {
+            const selector = variant[props[key] as keyof typeof variant] as
+              | string
+              | string[];
             componentStyles.push(
               Array.isArray(selector) ? selector.join(" ") : selector
             );
@@ -89,12 +96,13 @@ export const styled = <V extends variantsType, E extends React.ElementType>(
 
       componentProps.className = componentStyles.join(" ");
       styledComponent.displayName = element.toString();
+      // console.log(componentProps);
       return createElement(element, componentProps);
     }
   );
 
   return styledComponent as React.FC<
-    PropsOf<E> & {
+    React.ComponentProps<E> & {
       [Property in keyof V]?: BooleanIfStringBoolean<keyof V[Property]>;
     }
   >;
