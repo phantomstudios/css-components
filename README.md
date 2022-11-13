@@ -152,6 +152,7 @@ const StyledButton = styled(
 Wherever you specify a css selector, you can also pass in an array of classes to help composing and reusing styles.
 
 ```tsx
+import { styled } from "@phntms/css-components";
 import shared from "../sharedstyles.module.css";
 import css from "./styles.module.css";
 
