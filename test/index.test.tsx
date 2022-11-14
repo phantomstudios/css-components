@@ -28,6 +28,15 @@ describe("Basic functionality", () => {
     expect(container.firstChild).toHaveTextContent("Hello");
   });
 
+  it("should pass through classNames", async () => {
+    const Paragraph = styled("p", { css: "paragraph" });
+    const { container } = render(
+      <Paragraph className="summary">Hello</Paragraph>
+    );
+    expect(container.firstChild).toHaveClass("paragraph");
+    expect(container.firstChild).toHaveClass("summary");
+  });
+
   it("should pass through multiple children", async () => {
     const Article = styled("article");
     const { container } = render(
