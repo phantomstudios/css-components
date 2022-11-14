@@ -9,13 +9,13 @@ import { render } from "@testing-library/react";
 import { styled } from "../src";
 
 describe("Basic functionality", () => {
-  it("it should output the correct type of DOM node", async () => {
+  it("should return the correct type of DOM node", async () => {
     const Button = styled("button");
     const { container } = render(<Button />);
     expect(container.firstChild?.nodeName).toEqual("BUTTON");
   });
 
-  it("it should apply the base class", async () => {
+  it("should apply the base class", async () => {
     const Button = styled("button", "root");
     const { container } = render(<Button />);
     expect(container.firstChild).toHaveClass("root");
@@ -27,7 +27,19 @@ describe("Basic functionality", () => {
     expect(container.firstChild).toHaveTextContent("Hello");
   });
 
-  it("should pass provide typescript support for built in types", async () => {
+  it("should pass through multiple children", async () => {
+    const Article = styled("article");
+    const { container } = render(
+      <Article>
+        <h1>Title</h1>
+        <p>Description</p>
+      </Article>
+    );
+    expect(container.firstChild).toHaveTextContent("Title");
+    expect(container.firstChild).toHaveTextContent("Description");
+  });
+
+  it("should provide typescript support for built in types", async () => {
     const Input = styled("input");
     const onChange = jest.fn();
     const { container } = render(<Input value={"test"} onChange={onChange} />);

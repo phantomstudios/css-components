@@ -96,7 +96,6 @@ export const styled = <
 
       componentProps.className = componentStyles.join(" ");
       styledComponent.displayName = element.toString();
-      // console.log(componentProps);
       return createElement(element, componentProps);
     }
   );
