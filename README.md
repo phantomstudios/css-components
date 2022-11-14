@@ -149,6 +149,8 @@ const StyledButton = styled(
 
 ## Other
 
+### Array of Classes
+
 Wherever you specify a css selector, you can also pass in an array of classes to help composing and reusing styles.
 
 ```tsx
@@ -161,6 +163,17 @@ const Link = styled("a", [shared.link, shared.fontNormal, css.root], {
     true: [css.big, shared.fontBold],
   },
 });
+```
+
+### Type Helper
+
+We have included a helper that allows you to access the types of the variants you have defined.
+
+```tsx
+import { CSSComponentPropType } from "@phntms/css-components";
+import { Button } from "components/Button";
+
+type ButtonTypes = CSSComponentPropType<typeof Button, "type">;
 ```
 
 [npm-image]: https://img.shields.io/npm/v/@phntms/css-components.svg?style=flat-square&logo=react
