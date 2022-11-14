@@ -1,4 +1,9 @@
-// Mostly lifted from here: https://www.benmvp.com/blog/forwarding-refs-polymorphic-react-component-typescript/
+/**
+ * Mostly lifted from here:
+ * https://www.benmvp.com/blog/forwarding-refs-polymorphic-react-component-typescript/
+ *
+ * Much respect
+ */
 
 // Source: https://github.com/emotion-js/emotion/blob/master/packages/styled-base/types/helper.d.ts
 // A more precise version of just React.ComponentPropsWithoutRef on its own
@@ -40,16 +45,26 @@ export type PolymorphicComponentPropsWithRef<
   Props = Record<string, unknown>
 > = PolymorphicComponentProps<C, Props> & { ref?: PolymorphicRef<C> };
 
+/**
+ * Pass in an element type `E` and a variants `V` and get back a
+ * type that can be used to create a component.
+ */
+
 export type PolymorphicComponent<
   E extends React.ElementType,
   V extends variantsType | object
 > = React.FC<PolymorphicComponentPropsWithRef<E, VariantOptions<V>>>;
 
+/**
+ * CSS cam be passed in as either a string or an array of strings.
+ */
 export type cssType = string | string[];
 
 export type variantValue = string | number | boolean | string[];
 
-// An object of variants, and how they map to CSS styles
+/**
+ * An object of variants, and how they map to CSS styles
+ */
 export type variantsType = Partial<{
   [key: string]: { [key: string | number]: cssType };
 }>;
