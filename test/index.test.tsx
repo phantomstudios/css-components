@@ -46,6 +46,15 @@ describe("Basic functionality", () => {
     const { container } = render(<Input value={"test"} onChange={onChange} />);
     expect(container.firstChild).toHaveAttribute("value", "test");
   });
+
+  it("should provide support for data attributes", async () => {
+    const Input = styled("input");
+    const onChange = jest.fn();
+    const { container } = render(
+      <Input value={"test"} onChange={onChange} data-section="Login Form" />
+    );
+    expect(container.firstChild).toHaveAttribute("data-section", "Login Form");
+  });
 });
 
 describe("supports variants and compound variants", () => {
