@@ -40,6 +40,8 @@ const findMatchingCompoundVariants = (
     )
   );
 
+const flattenCss = (css: cssType) => (Array.isArray(css) ? css.join(" ") : css);
+
 // Source: https://github.com/emotion-js/emotion/blob/master/packages/styled-base/types/helper.d.ts
 // A more precise version of just React.ComponentPropsWithoutRef on its own
 export type PropsOf<
@@ -76,10 +78,7 @@ export const styled = <
       if (props.className) componentStyles.push(props.className);
 
       // Add the base style(s)
-      if (config?.css)
-        componentStyles.push(
-          Array.isArray(config.css) ? config.css.join(" ") : config.css
-        );
+      if (config?.css) componentStyles.push(flattenCss(config.css));
 
       // Pass through the ref
       if (ref) componentProps.ref = ref;
@@ -92,9 +91,7 @@ export const styled = <
             const selector = variant[
               mergedProps[key] as keyof typeof variant
             ] as cssType;
-            componentStyles.push(
-              Array.isArray(selector) ? selector.join(" ") : selector
-            );
+            componentStyles.push(flattenCss(selector));
           }
         } else {
           componentProps[key] = props[key];
