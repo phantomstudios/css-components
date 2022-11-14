@@ -1,30 +1,21 @@
 import { createElement, forwardRef, JSXElementConstructor } from "react";
 
+import {
+  BooleanIfStringBoolean,
+  CompoundVariantType,
+  cssType,
+  PolymorphicComponent,
+  PolymorphicComponentPropsWithRef,
+  VariantOptions,
+  variantsType,
+  variantValue,
+} from "./type";
+
 export type CSSComponentPropType<
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   C extends keyof JSX.IntrinsicElements | JSXElementConstructor<any>,
   P extends keyof React.ComponentProps<C>
 > = React.ComponentProps<C>[P];
-
-type cssType = string | string[];
-
-type variantValue = string | number | boolean | string[];
-
-// An object of variants, and how they map to CSS styles
-type variantsType = Partial<{
-  [key: string]: { [key: string | number]: cssType };
-}>;
-
-type VariantOptions<V> = {
-  [Property in keyof V]?: BooleanIfStringBoolean<keyof V[Property]>;
-};
-
-type CompoundVariantType<V> = VariantOptions<V> & {
-  css: cssType;
-};
-
-// Does the type being passed in look like a boolean? If so, return the boolean.
-type BooleanIfStringBoolean<T> = T extends "true" | "false" ? boolean : T;
 
 const findMatchingCompoundVariants = (
   compoundVariants: {
@@ -41,13 +32,6 @@ const findMatchingCompoundVariants = (
   );
 
 const flattenCss = (css: cssType) => (Array.isArray(css) ? css.join(" ") : css);
-
-// Source: https://github.com/emotion-js/emotion/blob/master/packages/styled-base/types/helper.d.ts
-// A more precise version of just React.ComponentPropsWithoutRef on its own
-export type PropsOf<
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  C extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>
-> = JSX.LibraryManagedAttributes<C, React.ComponentPropsWithoutRef<C>>;
 
 interface Config<V> {
   css?: cssType;
@@ -120,7 +104,5 @@ export const styled = <
     }
   );
 
-  return styledComponent as React.FC<
-    React.ComponentProps<E> & VariantOptions<V>
-  >;
+  return styledComponent as PolymorphicComponent<E, V>;
 };
