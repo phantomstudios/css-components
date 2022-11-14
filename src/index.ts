@@ -6,7 +6,6 @@ import {
   cssType,
   PolymorphicComponent,
   variantsType,
-  variantValue,
 } from "./type";
 
 export type CSSComponentPropType<
@@ -14,22 +13,6 @@ export type CSSComponentPropType<
   C extends keyof JSX.IntrinsicElements | JSXElementConstructor<any>,
   P extends keyof React.ComponentProps<C>
 > = React.ComponentProps<C>[P];
-
-const findMatchingCompoundVariants = (
-  compoundVariants: {
-    [key: string]: variantValue;
-  }[],
-  props: {
-    [key: string]: variantValue;
-  }
-) =>
-  compoundVariants.filter((compoundVariant) =>
-    Object.keys(compoundVariant).every(
-      (key) => key === "css" || compoundVariant[key] === props[key]
-    )
-  );
-
-const flattenCss = (css: cssType) => (Array.isArray(css) ? css.join(" ") : css);
 
 interface Config<V> {
   css?: cssType;
