@@ -15,9 +15,11 @@ type variantsType = Partial<{
   [key: string]: { [key: string | number]: cssType };
 }>;
 
-type compoundVariantType<V> = {
+type VariantOptions<V> = {
   [Property in keyof V]?: BooleanIfStringBoolean<keyof V[Property]>;
-} & {
+};
+
+type CompoundVariantType<V> = VariantOptions<V> & {
   css: cssType;
 };
 
@@ -48,7 +50,7 @@ export type PropsOf<
 interface Config<V> {
   css?: cssType;
   variants?: V;
-  compoundVariants?: compoundVariantType<V>[];
+  compoundVariants?: CompoundVariantType<V>[];
   defaultVariants?: {
     [Property in keyof V]?: BooleanIfStringBoolean<keyof V[Property]>;
   };
@@ -122,8 +124,6 @@ export const styled = <
   );
 
   return styledComponent as React.FC<
-    React.ComponentProps<E> & {
-      [Property in keyof V]?: BooleanIfStringBoolean<keyof V[Property]>;
-    }
+    React.ComponentProps<E> & VariantOptions<V>
   >;
 };
