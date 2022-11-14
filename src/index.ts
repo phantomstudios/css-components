@@ -5,8 +5,6 @@ import {
   CompoundVariantType,
   cssType,
   PolymorphicComponent,
-  PolymorphicComponentPropsWithRef,
-  VariantOptions,
   variantsType,
   variantValue,
 } from "./type";
