@@ -6,17 +6,19 @@ export type CSSComponentPropType<
   P extends keyof React.ComponentProps<C>
 > = React.ComponentProps<C>[P];
 
+type cssType = string | string[];
+
 type variantValue = string | number | boolean | string[];
 
 // An object of variants, and how they map to CSS styles
 type variantsType = Partial<{
-  [key: string]: { [key: string | number]: string | string[] };
+  [key: string]: { [key: string | number]: cssType };
 }>;
 
-type compoundVariantType = {
-  [key: string]: variantValue;
+type compoundVariantType<V> = {
+  [Property in keyof V]?: BooleanIfStringBoolean<keyof V[Property]>;
 } & {
-  css: string | string[];
+  css: cssType;
 };
 
 // Does the type being passed in look like a boolean? If so, return the boolean.
@@ -44,9 +46,9 @@ export type PropsOf<
 > = JSX.LibraryManagedAttributes<C, React.ComponentPropsWithoutRef<C>>;
 
 interface Config<V> {
-  css?: string | string[];
+  css?: cssType;
   variants?: V;
-  compoundVariants?: compoundVariantType[];
+  compoundVariants?: compoundVariantType<V>[];
   defaultVariants?: {
     [Property in keyof V]?: BooleanIfStringBoolean<keyof V[Property]>;
   };
@@ -71,14 +73,14 @@ export const styled = <
       // Pass through an existing className if it exists
       if (props.className) componentStyles.push(props.className);
 
-      // Pass through the ref
-      if (ref) componentProps.ref = ref;
-
       // Add the base style(s)
       if (config?.css)
         componentStyles.push(
           Array.isArray(config.css) ? config.css.join(" ") : config.css
         );
+
+      // Pass through the ref
+      if (ref) componentProps.ref = ref;
 
       // Apply any variant styles
       Object.keys(mergedProps).forEach((key) => {
@@ -87,7 +89,7 @@ export const styled = <
           if (variant && variant.hasOwnProperty(mergedProps[key])) {
             const selector = variant[
               mergedProps[key] as keyof typeof variant
-            ] as string | string[];
+            ] as cssType;
             componentStyles.push(
               Array.isArray(selector) ? selector.join(" ") : selector
             );
