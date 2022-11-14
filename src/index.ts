@@ -7,6 +7,7 @@ import {
   PolymorphicComponent,
   variantsType,
 } from "./type";
+import { findMatchingCompoundVariants, flattenCss } from "./utils";
 
 export type CSSComponentPropType<
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
