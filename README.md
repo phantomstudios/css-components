@@ -171,9 +171,10 @@ We have included a helper that allows you to access the types of the variants yo
 
 ```tsx
 import { CSSComponentPropType } from "@phntms/css-components";
-import { Button } from "components/Button";
 
-type ButtonTypes = CSSComponentPropType<typeof Button, "type">;
+const Button = styled("button", "test", { primary: { true: "primary" } });
+
+type ButtonTypes = CSSComponentPropType<typeof Button, "primary">;
 ```
 
 [npm-image]: https://img.shields.io/npm/v/@phntms/css-components.svg?style=flat-square&logo=react
