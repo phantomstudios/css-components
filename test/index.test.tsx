@@ -5,8 +5,9 @@
 import React from "react";
 
 import { render } from "@testing-library/react";
+import { expectTypeOf } from "expect-type";
 
-import { styled } from "../src";
+import { CSSComponentPropType, styled } from "../src";
 
 describe("Basic functionality", () => {
   it("should return the correct type of DOM node", async () => {
@@ -195,5 +196,13 @@ describe("supports more exotic setups", () => {
     const { container } = render(<Button ref={ref} />);
     expect(container.firstChild?.nodeName).toEqual("BUTTON");
     expect(ref).toBeCalled();
+  });
+
+  it("Should be able to inspect the variants", async () => {
+    const Button = styled("button", "test", { primary: { true: "primary" } });
+
+    type bla = CSSComponentPropType<typeof Button, "primary">;
+
+    expectTypeOf<bla>().toMatchTypeOf<boolean | undefined>();
   });
 });
