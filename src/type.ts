@@ -3,6 +3,7 @@
 // Source: https://github.com/emotion-js/emotion/blob/master/packages/styled-base/types/helper.d.ts
 // A more precise version of just React.ComponentPropsWithoutRef on its own
 export type PropsOf<
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   C extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>
 > = JSX.LibraryManagedAttributes<C, React.ComponentPropsWithoutRef<C>>;
 
