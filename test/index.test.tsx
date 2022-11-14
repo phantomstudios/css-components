@@ -190,10 +190,10 @@ describe("supports more exotic setups", () => {
   });
 
   it("Should be able to inspect the variants", async () => {
-    const Button = styled("button", "test", { pants: { pants: "pants" } });
+    const Button = styled("button", "test", { primary: { true: "primary" } });
 
-    type bla = CSSComponentPropType<typeof Button, "pants">;
+    type bla = CSSComponentPropType<typeof Button, "primary">;
 
-    expectTypeOf<bla>().toMatchTypeOf<"pants" | undefined>();
+    expectTypeOf<bla>().toMatchTypeOf<boolean | undefined>();
   });
 });
