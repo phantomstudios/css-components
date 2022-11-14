@@ -171,8 +171,9 @@ We have included a helper that allows you to access the types of the variants yo
 
 ```tsx
 import { CSSComponentPropType } from "@phntms/css-components";
+import css from "./styles.module.css";
 
-const Button = styled("button", "test", { primary: { true: "primary" } });
+const Button = styled("button", css.baseButton, { primary: { true: css.primary } });
 
 type ButtonTypes = CSSComponentPropType<typeof Button, "primary">;
 ```
