@@ -43,7 +43,7 @@ export type PropsOf<
   C extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>
 > = JSX.LibraryManagedAttributes<C, React.ComponentPropsWithoutRef<C>>;
 
-interface Config<E, V> {
+interface Config<V> {
   css?: string | string[];
   variants?: V;
   compoundVariants?: compoundVariantType[];
@@ -57,7 +57,7 @@ export const styled = <
   E extends React.ElementType
 >(
   element: E,
-  config?: Config<E, V>
+  config?: Config<V>
 ) => {
   const styledComponent = forwardRef<E, { [key: string]: string }>(
     (props, ref) => {

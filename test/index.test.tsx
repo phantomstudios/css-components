@@ -148,7 +148,7 @@ describe("supports variants and compound variants", () => {
   it("Should support default variants", async () => {
     const Button = styled("button", {
       css: "test",
-      variants: { primary: { true: "primary", false: "noprimary" } },
+      variants: { primary: { true: "primary", false: "secondary" } },
       defaultVariants: { primary: true },
     });
 
