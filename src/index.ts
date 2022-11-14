@@ -1,4 +1,10 @@
-import { createElement, forwardRef } from "react";
+import { createElement, forwardRef, JSXElementConstructor } from "react";
+
+export type CSSComponentPropType<
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  C extends keyof JSX.IntrinsicElements | JSXElementConstructor<any>,
+  P extends keyof React.ComponentProps<C>
+> = React.ComponentProps<C>[P];
 
 type variantValue = string | number | boolean | string[];
 
