@@ -43,17 +43,27 @@ export type PropsOf<
   C extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>
 > = JSX.LibraryManagedAttributes<C, React.ComponentPropsWithoutRef<C>>;
 
+interface Config<E, V> {
+  css?: string | string[];
+  variants?: V;
+  compoundVariants?: compoundVariantType[];
+  defaultVariants?: {
+    [Property in keyof V]?: BooleanIfStringBoolean<keyof V[Property]>;
+  };
+}
+
 export const styled = <
   V extends variantsType | object,
   E extends React.ElementType
 >(
   element: E,
-  baseClassName?: string | string[],
-  variants?: V,
-  compoundVariants?: compoundVariantType[]
+  config?: Config<E, V>
 ) => {
   const styledComponent = forwardRef<E, { [key: string]: string }>(
     (props, ref) => {
+      const mergedProps = { ...config?.defaultVariants, ...props } as {
+        [key: string]: string;
+      };
       // Initialize variables to store the new props and styles
       const componentProps: { [key: string]: unknown } = {};
       const componentStyles: string[] = [];
@@ -65,19 +75,19 @@ export const styled = <
       if (ref) componentProps.ref = ref;
 
       // Add the base style(s)
-      if (baseClassName)
+      if (config?.css)
         componentStyles.push(
-          Array.isArray(baseClassName) ? baseClassName.join(" ") : baseClassName
+          Array.isArray(config.css) ? config.css.join(" ") : config.css
         );
 
       // Apply any variant styles
-      Object.keys(props).forEach((key) => {
-        if (variants && variants.hasOwnProperty(key)) {
-          const variant = variants[key as keyof typeof variants];
-          if (variant && variant.hasOwnProperty(props[key])) {
-            const selector = variant[props[key] as keyof typeof variant] as
-              | string
-              | string[];
+      Object.keys(mergedProps).forEach((key) => {
+        if (config?.variants && config.variants.hasOwnProperty(key)) {
+          const variant = config.variants[key as keyof typeof config.variants];
+          if (variant && variant.hasOwnProperty(mergedProps[key])) {
+            const selector = variant[
+              mergedProps[key] as keyof typeof variant
+            ] as string | string[];
             componentStyles.push(
               Array.isArray(selector) ? selector.join(" ") : selector
             );
@@ -88,8 +98,11 @@ export const styled = <
       });
 
       // Apply any compound variant styles
-      if (compoundVariants) {
-        const matches = findMatchingCompoundVariants(compoundVariants, props);
+      if (config?.compoundVariants) {
+        const matches = findMatchingCompoundVariants(
+          config.compoundVariants,
+          props
+        );
 
         matches.forEach((match) => {
           if (Array.isArray(match.css)) {

@@ -16,9 +16,12 @@ Here is a minimal example of a button component with an optional variant:
 import { styled } from "@phntms/css-components";
 import css from "./styles.module.css";
 
-export const Button = styled("button", css.root, {
-  primary: {
-    true: css.primary,
+export const Button = styled("button", {
+  css: css.root,
+  variants: {
+    primary: {
+      true: css.primary,
+    },
   },
 });
 ```
@@ -67,9 +70,12 @@ components/Button/styles.ts
 import { styled } from "@phntms/css-components";
 import css from "./styles.module.css";
 
-export const StyledButton = styled("button", css.root, {
-  primary: {
-    true: css.primary,
+export const StyledButton = styled("button", {
+  css: css.root,
+  variants: {
+    primary: {
+      true: css.primary,
+    },
   },
 });
 ```
@@ -97,20 +103,42 @@ export const Button = ({ title, onClick, primary }: Props) => (
 The variants config object is a simple object that allows you to define the variants that your component supports. Each variant is a key in the object and the value is an object that defines the possible values(css classes) for that variant.
 
 ```tsx
-const StyledButton = styled("button", css.root, {
-  big: {
-    // Boolean values are supported
-    true: css.big,
+const StyledButton = styled("button", {
+  css: css.root,
+  variants: {
+    big: {
+      // Boolean values are supported
+      true: css.big,
+    },
+    color: {
+      // String values are supported
+      primary: css.primary,
+      secondary: css.secondary,
+    },
+    size: {
+      // Number values are supported
+      1: css.size1,
+      2: css.size2,
+    },
   },
-  color: {
-    // String values are supported
-    primary: css.primary,
-    secondary: css.secondary,
+});
+```
+
+## Default Variants
+
+You can use the `defaultVariants` feature to set a variant by default:
+
+```tsx
+const StyledButton = styled("button", {
+  css: css.root,
+  variants: {
+    big: {
+      // Boolean values are supported
+      true: css.big,
+    },
   },
-  size: {
-    // Number values are supported
-    1: css.size1,
-    2: css.size2,
+  defaultVariants: {
+    big: true,
   },
 });
 ```
@@ -120,10 +148,9 @@ const StyledButton = styled("button", css.root, {
 For more complex variant setups you can use the compound variants argument to define what styles should be applied when multiple variants are used.
 
 ```tsx
-const StyledButton = styled(
-  "button",
-  css.root,
-  {
+const StyledButton = styled("button", {
+  css: css.root,
+  variants: {
     border: {
       true: css.bordered,
     },
@@ -132,7 +159,7 @@ const StyledButton = styled(
       secondary: css.secondary,
     },
   },
-  [
+  compoundVariants: [
     {
       border: true,
       color: "primary",
@@ -143,8 +170,8 @@ const StyledButton = styled(
       color: "secondary",
       css: css.greyBorder,
     },
-  ]
-);
+  ],
+});
 ```
 
 ## Other
@@ -158,9 +185,12 @@ import { styled } from "@phntms/css-components";
 import shared from "../sharedstyles.module.css";
 import css from "./styles.module.css";
 
-const Link = styled("a", [shared.link, shared.fontNormal, css.root], {
-  big: {
-    true: [css.big, shared.fontBold],
+const Link = styled("a", {
+  css: [shared.link, shared.fontNormal, css.root],
+  variants: {
+    big: {
+      true: [css.big, shared.fontBold],
+    },
   },
 });
 ```
@@ -173,8 +203,11 @@ We have included a helper that allows you to access the types of the variants yo
 import { CSSComponentPropType } from "@phntms/css-components";
 import css from "./styles.module.css";
 
-const Button = styled("button", css.baseButton, {
-  primary: { true: css.primary },
+const Button = styled("button", {
+  css: css.baseButton,
+  variants: {
+    primary: { true: css.primary },
+  },
 });
 
 type ButtonTypes = CSSComponentPropType<typeof Button, "primary">;

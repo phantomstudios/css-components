@@ -17,7 +17,7 @@ describe("Basic functionality", () => {
   });
 
   it("should apply the base class", async () => {
-    const Button = styled("button", "root");
+    const Button = styled("button", { css: "root" });
     const { container } = render(<Button />);
     expect(container.firstChild).toHaveClass("root");
   });
@@ -59,8 +59,11 @@ describe("Basic functionality", () => {
 
 describe("supports variants and compound variants", () => {
   it("should work with a single boolean variant but not set", async () => {
-    const Button = styled("button", "root", {
-      primary: { true: "primary" },
+    const Button = styled("button", {
+      css: "root",
+      variants: {
+        primary: { true: "primary" },
+      },
     });
 
     const { container } = render(<Button />);
@@ -70,8 +73,11 @@ describe("supports variants and compound variants", () => {
   });
 
   it("should work with a single boolean variant", async () => {
-    const Button = styled("button", "root", {
-      primary: { true: "primary" },
+    const Button = styled("button", {
+      css: "root",
+      variants: {
+        primary: { true: "primary" },
+      },
     });
 
     const { container } = render(<Button primary />);
@@ -81,10 +87,13 @@ describe("supports variants and compound variants", () => {
   });
 
   it("should work with a multiple variants", async () => {
-    const PageTitle = styled("h2", "root", {
-      highlighted: { true: "highlighted" },
-      size: { 0: "size0", 1: "size1" },
-      align: { left: "left", center: "center", right: "right" },
+    const PageTitle = styled("h2", {
+      css: "root",
+      variants: {
+        highlighted: { true: "highlighted" },
+        size: { 0: "size0", 1: "size1" },
+        align: { left: "left", center: "center", right: "right" },
+      },
     });
 
     const { container } = render(
@@ -101,10 +110,9 @@ describe("supports variants and compound variants", () => {
   });
 
   it("should work with compound variants", async () => {
-    const Button = styled(
-      "button",
-      "root",
-      {
+    const Button = styled("button", {
+      css: "root",
+      variants: {
         border: {
           true: "borderTrue",
         },
@@ -113,7 +121,7 @@ describe("supports variants and compound variants", () => {
           secondary: "colorSecondary",
         },
       },
-      [
+      compoundVariants: [
         {
           border: true,
           color: "primary",
@@ -124,8 +132,8 @@ describe("supports variants and compound variants", () => {
           color: "secondary",
           css: "borderSecondary",
         },
-      ]
-    );
+      ],
+    });
 
     const { container } = render(<Button border color={"primary"} />);
 
@@ -136,32 +144,43 @@ describe("supports variants and compound variants", () => {
     expect(container.firstChild).not.toHaveClass("borderSecondary");
     expect(container.firstChild).not.toHaveClass("colorSecondary");
   });
+
+  it("Should support default variants", async () => {
+    const Button = styled("button", {
+      css: "test",
+      variants: { primary: { true: "primary", false: "noprimary" } },
+      defaultVariants: { primary: true },
+    });
+
+    const { container } = render(<Button />);
+
+    expect(container.firstChild).toHaveClass("primary");
+  });
 });
 
 describe("supports array styles", () => {
   it("should should apply the base classes", async () => {
-    const Button = styled("button", ["baseButton", "button"]);
+    const Button = styled("button", { css: ["baseButton", "button"] });
     const { container } = render(<Button />);
     expect(container.firstChild).toHaveClass("baseButton");
     expect(container.firstChild).toHaveClass("button");
   });
 
   it("should should apply the base classes", async () => {
-    const Button = styled(
-      "button",
-      ["baseButton", "button"],
-      {
+    const Button = styled("button", {
+      css: ["baseButton", "button"],
+      variants: {
         primary: { true: ["primary", "bold"] },
         big: { true: ["big"] },
       },
-      [
+      compoundVariants: [
         {
           primary: true,
           big: true,
           css: ["primaryBig", "primaryBigBold"],
         },
-      ]
-    );
+      ],
+    });
     const { container } = render(<Button primary big />);
     expect(container.firstChild).toHaveClass("baseButton");
     expect(container.firstChild).toHaveClass("button");
@@ -175,11 +194,17 @@ describe("supports array styles", () => {
 
 describe("supports more exotic setups", () => {
   it("should be able to style nested react components", async () => {
-    const BaseButton = styled("button", "baseButton", {
-      size: { big: "big", small: "small" },
+    const BaseButton = styled("button", {
+      css: "baseButton",
+      variants: {
+        size: { big: "big", small: "small" },
+      },
     });
-    const Button = styled(BaseButton, "button", {
-      color: { primary: "colorPrimary", secondary: "colorSecondary" },
+    const Button = styled(BaseButton, {
+      css: "button",
+      variants: {
+        color: { primary: "colorPrimary", secondary: "colorSecondary" },
+      },
     });
     const { container } = render(<Button size="big" color="primary" />);
 
@@ -199,10 +224,13 @@ describe("supports more exotic setups", () => {
   });
 
   it("Should be able to inspect the variants", async () => {
-    const Button = styled("button", "test", { primary: { true: "primary" } });
+    const Button = styled("button", {
+      css: "test",
+      variants: { primary: { true: "primary" } },
+    });
 
-    type bla = CSSComponentPropType<typeof Button, "primary">;
+    type primaryType = CSSComponentPropType<typeof Button, "primary">;
 
-    expectTypeOf<bla>().toMatchTypeOf<boolean | undefined>();
+    expectTypeOf<primaryType>().toMatchTypeOf<boolean | undefined>();
   });
 });
