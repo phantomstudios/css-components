@@ -56,7 +56,7 @@ export type PolymorphicComponent<
 > = React.FC<PolymorphicComponentPropsWithRef<E, VariantOptions<V>>>;
 
 /**
- * CSS cam be passed in as either a string or an array of strings.
+ * CSS can be passed in as either a string or an array of strings.
  */
 export type cssType = string | string[];
 
