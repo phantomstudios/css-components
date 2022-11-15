@@ -232,7 +232,7 @@ describe("supports more exotic setups", () => {
     expect(ref).toBeCalled();
   });
 
-  it("Should be able to inspect the variants", async () => {
+  it("should be able to inspect the variants", async () => {
     const Button = styled("button", {
       css: "test",
       variants: { primary: { true: "primary" } },
@@ -241,5 +241,15 @@ describe("supports more exotic setups", () => {
     type primaryType = CSSComponentPropType<typeof Button, "primary">;
 
     expectTypeOf<primaryType>().toMatchTypeOf<boolean | undefined>();
+  });
+
+  it("should be able to use existing props as variants", async () => {
+    const Option = styled("option", {
+      css: "test",
+      variants: { selected: { true: "primary" } },
+    });
+    const { container } = render(<Option selected>Option 1</Option>);
+
+    expect(container.firstChild).toHaveClass("primary");
   });
 });

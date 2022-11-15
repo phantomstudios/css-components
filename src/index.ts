@@ -1,63 +1,21 @@
-import { createElement, forwardRef, JSXElementConstructor } from "react";
+import { createElement, forwardRef } from "react";
 
-export type CSSComponentPropType<
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  C extends keyof JSX.IntrinsicElements | JSXElementConstructor<any>,
-  P extends keyof React.ComponentProps<C>
-> = React.ComponentProps<C>[P];
+import {
+  CSSComponentConfig,
+  cssType,
+  PolymorphicComponent,
+  variantsType,
+} from "./type";
+import { findMatchingCompoundVariants, flattenCss } from "./utils";
 
-type variantValue = string | number | boolean | string[];
-
-// An object of variants, and how they map to CSS styles
-type variantsType = Partial<{
-  [key: string]: { [key: string | number]: string | string[] };
-}>;
-
-type compoundVariantType = {
-  [key: string]: variantValue;
-} & {
-  css: string | string[];
-};
-
-// Does the type being passed in look like a boolean? If so, return the boolean.
-type BooleanIfStringBoolean<T> = T extends "true" | "false" ? boolean : T;
-
-const findMatchingCompoundVariants = (
-  compoundVariants: {
-    [key: string]: variantValue;
-  }[],
-  props: {
-    [key: string]: variantValue;
-  }
-) =>
-  compoundVariants.filter((compoundVariant) =>
-    Object.keys(compoundVariant).every(
-      (key) => key === "css" || compoundVariant[key] === props[key]
-    )
-  );
-
-// Source: https://github.com/emotion-js/emotion/blob/master/packages/styled-base/types/helper.d.ts
-// A more precise version of just React.ComponentPropsWithoutRef on its own
-export type PropsOf<
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  C extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>
-> = JSX.LibraryManagedAttributes<C, React.ComponentPropsWithoutRef<C>>;
-
-interface Config<V> {
-  css?: string | string[];
-  variants?: V;
-  compoundVariants?: compoundVariantType[];
-  defaultVariants?: {
-    [Property in keyof V]?: BooleanIfStringBoolean<keyof V[Property]>;
-  };
-}
+export { CSSComponentConfig, CSSComponentPropType } from "./type";
 
 export const styled = <
   V extends variantsType | object,
   E extends React.ElementType
 >(
   element: E,
-  config?: Config<V>
+  config?: CSSComponentConfig<V>
 ) => {
   const styledComponent = forwardRef<E, { [key: string]: string }>(
     (props, ref) => {
@@ -71,14 +29,11 @@ export const styled = <
       // Pass through an existing className if it exists
       if (props.className) componentStyles.push(props.className);
 
+      // Add the base style(s)
+      if (config?.css) componentStyles.push(flattenCss(config.css));
+
       // Pass through the ref
       if (ref) componentProps.ref = ref;
-
-      // Add the base style(s)
-      if (config?.css)
-        componentStyles.push(
-          Array.isArray(config.css) ? config.css.join(" ") : config.css
-        );
 
       // Apply any variant styles
       Object.keys(mergedProps).forEach((key) => {
@@ -87,10 +42,8 @@ export const styled = <
           if (variant && variant.hasOwnProperty(mergedProps[key])) {
             const selector = variant[
               mergedProps[key] as keyof typeof variant
-            ] as string | string[];
-            componentStyles.push(
-              Array.isArray(selector) ? selector.join(" ") : selector
-            );
+            ] as cssType;
+            componentStyles.push(flattenCss(selector));
           }
         } else {
           componentProps[key] = props[key];
@@ -119,9 +72,5 @@ export const styled = <
     }
   );
 
-  return styledComponent as React.FC<
-    React.ComponentProps<E> & {
-      [Property in keyof V]?: BooleanIfStringBoolean<keyof V[Property]>;
-    }
-  >;
+  return styledComponent as PolymorphicComponent<E, V>;
 };
