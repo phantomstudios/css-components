@@ -37,6 +37,10 @@ footer.footer-fixed-true-theme-light {
   color: red;
 }
 
+footer.footer-fixed-false-theme-light {
+  color: red;
+}
+
 
 a.link {
     text-decoration: none;

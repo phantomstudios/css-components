@@ -4,31 +4,45 @@ const extractStyles = (path) => {
   const buffer = fs.readFileSync(path);
   const fileContent = buffer.toString();
   return fileContent.match(
-    /(?:[\.]{1})([a-zA-Z_]+[\w-_]*)(?:[\s\.\,\{\>#\:]{0})/gim
+    /([a-zA-Z_]*)(?:[.]{1})([a-zA-Z_]+[\w\-_]*)(?:[\s\.\,\{\>#\:]{0})/gim
   );
 };
 
 const stylesToConfig = (styles) => {
+  console.log(styles);
+  // process.exit(0);
   const config = {};
   styles.forEach((item) => {
-    const withoutDot = item.replace(".", "");
-    const chunks = withoutDot.split("-");
+    const parts = item.split(".");
+    const element = parts[0];
+    const className = parts[1];
+    const chunks = className.split("-");
     if (chunks.length === 1) {
       const component = chunks[0];
       if (!config[component]) {
-        config[component] = { variants: {}, compoundVariants: [] };
+        config[component] = {
+          variants: {},
+          compoundVariants: [],
+          css: component,
+          element,
+        };
       }
     } else if (chunks.length === 3) {
       const component = chunks[0];
       const variant = chunks[1];
       const option = chunks[2];
       if (!config[component]) {
-        config[component] = { variants: {}, compoundVariants: [] };
+        config[component] = {
+          variants: {},
+          compoundVariants: [],
+          css: component,
+          element,
+        };
       }
       if (!config[component].variants[variant]) {
         config[component].variants[variant] = {};
       }
-      config[component].variants[variant][option] = withoutDot;
+      config[component].variants[variant][option] = className;
     } else if (chunks.length > 3) {
       const component = chunks[0];
       const variants = chunks.slice(1, chunks.length);
@@ -40,10 +54,15 @@ const stylesToConfig = (styles) => {
       }, {});
 
       if (!config[component]) {
-        config[component] = { variants: {}, compoundVariants: [] };
+        config[component] = {
+          variants: {},
+          compoundVariants: [],
+          css: component,
+          element,
+        };
       }
 
-      config[component].compoundVariants.push({ ...vars, css: withoutDot });
+      config[component].compoundVariants.push({ ...vars, css: className });
       // if (!config[component].variants[variant]) {
       //   config[component].variants[variant] = {};
       // }
@@ -65,7 +84,7 @@ Object.keys(config).forEach((key) => {
   const hasVariants = Object.keys(config[key].variants).length > 0;
   const hasCompoundVariants = config[key].compoundVariants.length > 0;
   const componentName = key.charAt(0).toUpperCase() + key.slice(1);
-  s += `export const ${componentName} = styled("footer", {\n`;
+  s += `export const ${componentName} = styled("${config[key].element}", {\n`;
 
   s += `  css: css.${key}\n`;
   if (hasVariants) {
@@ -81,19 +100,21 @@ Object.keys(config).forEach((key) => {
   }
 
   if (hasCompoundVariants) {
-    s += `  compoundVariants: {\n`;
+    s += `  compoundVariants: [\n`;
     config[key].compoundVariants.forEach((variant) => {
+      s += `    {\n`;
       Object.keys(variant).forEach((key) => {
-        s += `    ${key}: "${variant[key]}",\n`;
+        s += `      ${key}: css.${variant[key]},\n`;
       });
+      s += `    },\n`;
     });
-    s += `  },\n`;
+    s += `  ],\n`;
   }
 
   s += `};\n`;
   s += `\n`;
 });
 
-// console.log("config", config.footer);
-console.log();
+// console.log("config", config);
+// console.log();
 console.log(s);
