@@ -121,11 +121,11 @@ Object.keys(config).forEach((key) => {
   }
 
   s += `});\n`;
-  s += `\n`;
 });
 
-fs.writeFileSync(outputFile, s);
-
-// console.log("config", config.footer);
-// console.log();
-console.log(s);
+if (outputFile) {
+  fs.writeFileSync(outputFile, s);
+  console.log("File written to", outputFile);
+} else {
+  console.log(s);
+}
