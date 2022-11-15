@@ -15,11 +15,11 @@ footer.footer-fixed-true {
 }
 
 
-footer.footer-theme-light {
+footer.footer-theme-light-default {
     background-color: white;
 }
 
-footer.footer-theme-light a {
+footer.footer-theme-light-default a {
   background-color: black;
 }
 
@@ -54,4 +54,6 @@ a.link:hover {
 a.link-primary-true {
     font-size: 1.5em;
 }
+
+
 

@@ -9,49 +9,17 @@ const extractStyles = (path) => {
 };
 
 const stylesToConfig = (styles) => {
-  console.log(styles);
-  // process.exit(0);
   const config = {};
   styles.forEach((item) => {
     const parts = item.split(".");
     const element = parts[0];
     const className = parts[1];
     const chunks = className.split("-");
-    if (chunks.length === 1) {
-      const component = chunks[0];
-      if (!config[component]) {
-        config[component] = {
-          variants: {},
-          compoundVariants: [],
-          css: component,
-          element,
-        };
-      }
-    } else if (chunks.length === 3) {
-      const component = chunks[0];
-      const variant = chunks[1];
-      const option = chunks[2];
-      if (!config[component]) {
-        config[component] = {
-          variants: {},
-          compoundVariants: [],
-          css: component,
-          element,
-        };
-      }
-      if (!config[component].variants[variant]) {
-        config[component].variants[variant] = {};
-      }
-      config[component].variants[variant][option] = className;
-    } else if (chunks.length > 3) {
-      const component = chunks[0];
-      const variants = chunks.slice(1, chunks.length);
 
-      const vars = variants.reduce((acc, cur, i, arr) => {
-        if (i % 2 !== 0 || i + 1 >= arr.length) return acc;
-        acc[cur] = arr[i + 1];
-        return acc;
-      }, {});
+    if (chunks.length === 2) return;
+
+    if (chunks.length >= 1) {
+      const component = chunks[0];
 
       if (!config[component]) {
         config[component] = {
@@ -62,12 +30,26 @@ const stylesToConfig = (styles) => {
         };
       }
 
-      config[component].compoundVariants.push({ ...vars, css: className });
-      // if (!config[component].variants[variant]) {
-      //   config[component].variants[variant] = {};
-      // }
+      if (chunks.length === 3 || chunks.length === 4) {
+        const variant = chunks[1];
+        const option = chunks[2];
+        if (!config[component].variants[variant]) {
+          config[component].variants[variant] = {};
+        }
+        config[component].variants[variant][option] = className;
+      } else if (chunks.length > 4) {
+        const variants = chunks.slice(1, chunks.length);
 
-      // console.log("vars", vars);
+        const vars = variants.reduce((acc, cur, i, arr) => {
+          if (i % 2 !== 0 || i + 1 >= arr.length) return acc;
+          acc[cur] = arr[i + 1];
+          return acc;
+        }, {});
+        config[component].compoundVariants.push({
+          ...vars,
+          css: className,
+        });
+      }
     }
   });
   return config;
@@ -111,10 +93,22 @@ Object.keys(config).forEach((key) => {
     s += `  ],\n`;
   }
 
+  if (hasVariants) {
+    s += `  defaultVariants: {\n`;
+    Object.keys(config[key].variants).forEach((variant) => {
+      Object.keys(config[key].variants[variant]).forEach((option) => {
+        console.log("----->", config[key].variants[variant][option]);
+        if (config[key].variants[variant][option].endsWith("default"))
+          s += `    ${variant}: "${option}",\n`;
+      });
+    });
+    s += `  },\n`;
+  }
+
   s += `};\n`;
   s += `\n`;
 });
 
-// console.log("config", config);
+console.log("config", config.footer);
 // console.log();
 console.log(s);
