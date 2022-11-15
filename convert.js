@@ -1,5 +1,16 @@
 const fs = require("fs");
 
+const yargs = require("yargs/yargs");
+
+const argv = yargs(process.argv.slice(2))
+  .usage("Usage: $0 --css [file] --output [file]")
+  .describe("css", "path to css file")
+  .describe("output", "file path to save")
+  .demandOption(["css"]).argv;
+
+const cssFile = argv.css;
+const outputFile = argv.output;
+
 const extractStyles = (path) => {
   const buffer = fs.readFileSync(path);
   const fileContent = buffer.toString();
@@ -14,7 +25,7 @@ const stylesToConfig = (styles) => {
     const parts = item.split(".");
     const element = parts[0];
     const className = parts[1];
-    const chunks = className.split("-");
+    const chunks = className.split("_");
 
     if (chunks.length === 2) return;
 
@@ -56,11 +67,15 @@ const stylesToConfig = (styles) => {
 };
 
 const styles = extractStyles(
-  "/Users/john.chipps-harding/Projects/css-components/styles.module.css"
+  cssFile
+  // "/Users/john.chipps-harding/Projects/css-components/styles.module.css"
+  // "./styles.module.css"
 );
 const config = stylesToConfig(styles);
 
 let s = "";
+s += `import { styled } from "@phntms/css-components;\n\n`;
+s += `import css from "./styles.module.css";\n\n`;
 
 Object.keys(config).forEach((key) => {
   const hasVariants = Object.keys(config[key].variants).length > 0;
@@ -68,7 +83,7 @@ Object.keys(config).forEach((key) => {
   const componentName = key.charAt(0).toUpperCase() + key.slice(1);
   s += `export const ${componentName} = styled("${config[key].element}", {\n`;
 
-  s += `  css: css.${key}\n`;
+  s += `  css: css.${key},\n`;
   if (hasVariants) {
     s += `  variants: {\n`;
     Object.keys(config[key].variants).forEach((variant) => {
@@ -97,7 +112,7 @@ Object.keys(config).forEach((key) => {
     s += `  defaultVariants: {\n`;
     Object.keys(config[key].variants).forEach((variant) => {
       Object.keys(config[key].variants[variant]).forEach((option) => {
-        console.log("----->", config[key].variants[variant][option]);
+        // console.log("----->", config[key].variants[variant][option]);
         if (config[key].variants[variant][option].endsWith("default"))
           s += `    ${variant}: "${option}",\n`;
       });
@@ -105,10 +120,12 @@ Object.keys(config).forEach((key) => {
     s += `  },\n`;
   }
 
-  s += `};\n`;
+  s += `});\n`;
   s += `\n`;
 });
 
-console.log("config", config.footer);
+fs.writeFileSync(outputFile, s);
+
+// console.log("config", config.footer);
 // console.log();
 console.log(s);

@@ -7,7 +7,7 @@ footer.footer {
     padding: 32px;
 }
 
-footer.footer-fixed-true {
+footer.footer_fixed_true {
     position: fixed;
     bottom: 0;
     left: 0;
@@ -15,29 +15,29 @@ footer.footer-fixed-true {
 }
 
 
-footer.footer-theme-light-default {
+footer.footer_theme_light_default {
     background-color: white;
 }
 
-footer.footer-theme-light-default a {
+footer.footer_theme_light_default a {
   background-color: black;
 }
 
-footer.footer-theme-dark {
+footer.footer_theme_dark {
   background-color: black;
 }
 
-footer.footer-theme-dark a {
+footer.footer_theme_dark a {
   background-color: white;
 }
 
 
 
-footer.footer-fixed-true-theme-light {
+footer.footer_fixed_true_theme_light {
   color: red;
 }
 
-footer.footer-fixed-false-theme-light {
+footer.footer_fixed_false_theme_light {
   color: red;
 }
 
@@ -51,7 +51,7 @@ a.link:hover {
     color: #2244ff;
 }
 
-a.link-primary-true {
+a.link_primary_true {
     font-size: 1.5em;
 }
 
