@@ -56,6 +56,18 @@ export type PolymorphicComponent<
 > = React.FC<PolymorphicComponentPropsWithRef<E, VariantOptions<V>>>;
 
 /**
+ * The CSS Component Config type.
+ */
+export interface Config<V> {
+  css?: cssType;
+  variants?: V;
+  compoundVariants?: CompoundVariantType<V>[];
+  defaultVariants?: {
+    [Property in keyof V]?: BooleanIfStringBoolean<keyof V[Property]>;
+  };
+}
+
+/**
  * CSS can be passed in as either a string or an array of strings.
  */
 export type cssType = string | string[];

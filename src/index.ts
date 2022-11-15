@@ -1,12 +1,6 @@
 import { createElement, forwardRef, JSXElementConstructor } from "react";
 
-import {
-  BooleanIfStringBoolean,
-  CompoundVariantType,
-  cssType,
-  PolymorphicComponent,
-  variantsType,
-} from "./type";
+import { Config, cssType, PolymorphicComponent, variantsType } from "./type";
 import { findMatchingCompoundVariants, flattenCss } from "./utils";
 
 export type CSSComponentPropType<
@@ -14,15 +8,6 @@ export type CSSComponentPropType<
   C extends keyof JSX.IntrinsicElements | JSXElementConstructor<any>,
   P extends keyof React.ComponentProps<C>
 > = React.ComponentProps<C>[P];
-
-interface Config<V> {
-  css?: cssType;
-  variants?: V;
-  compoundVariants?: CompoundVariantType<V>[];
-  defaultVariants?: {
-    [Property in keyof V]?: BooleanIfStringBoolean<keyof V[Property]>;
-  };
-}
 
 export const styled = <
   V extends variantsType | object,
