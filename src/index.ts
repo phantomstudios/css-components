@@ -1,20 +1,21 @@
-import { createElement, forwardRef, JSXElementConstructor } from "react";
+import { createElement, forwardRef } from "react";
 
-import { Config, cssType, PolymorphicComponent, variantsType } from "./type";
+import {
+  CSSComponentConfig,
+  cssType,
+  PolymorphicComponent,
+  variantsType,
+} from "./type";
 import { findMatchingCompoundVariants, flattenCss } from "./utils";
 
-export type CSSComponentPropType<
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  C extends keyof JSX.IntrinsicElements | JSXElementConstructor<any>,
-  P extends keyof React.ComponentProps<C>
-> = React.ComponentProps<C>[P];
+export { CSSComponentConfig, CSSComponentPropType } from "./type";
 
 export const styled = <
   V extends variantsType | object,
   E extends React.ElementType
 >(
   element: E,
-  config?: Config<V>
+  config?: CSSComponentConfig<V>
 ) => {
   const styledComponent = forwardRef<E, { [key: string]: string }>(
     (props, ref) => {

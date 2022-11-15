@@ -5,6 +5,8 @@
  * Much respect
  */
 
+import { JSXElementConstructor } from "react";
+
 // Source: https://github.com/emotion-js/emotion/blob/master/packages/styled-base/types/helper.d.ts
 // A more precise version of just React.ComponentPropsWithoutRef on its own
 export type PropsOf<
@@ -58,7 +60,7 @@ export type PolymorphicComponent<
 /**
  * The CSS Component Config type.
  */
-export interface Config<V> {
+export interface CSSComponentConfig<V> {
   css?: cssType;
   variants?: V;
   compoundVariants?: CompoundVariantType<V>[];
@@ -66,6 +68,15 @@ export interface Config<V> {
     [Property in keyof V]?: BooleanIfStringBoolean<keyof V[Property]>;
   };
 }
+
+/**
+ * Allows you to extract a type for variant values.
+ */
+export type CSSComponentPropType<
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  C extends keyof JSX.IntrinsicElements | JSXElementConstructor<any>,
+  P extends keyof React.ComponentProps<C>
+> = React.ComponentProps<C>[P];
 
 /**
  * CSS can be passed in as either a string or an array of strings.
