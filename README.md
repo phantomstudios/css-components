@@ -260,7 +260,7 @@ You can generate a component from this file with the following command:
 npx @phntms/css-components --css styles.module.css
 
 # or if you have the package installed
-npm exec css-components --css styles.module.css
+npx css-components --css styles.module.css
 ```
 
 This will output a file called `styles.ts` that looks like this:
