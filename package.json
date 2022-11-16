@@ -22,8 +22,9 @@
     "css-components": "lib/cli/index.js"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && npm run build:shebang",
     "build:types": "tsc --emitDeclarationOnly",
+    "build:shebang": "echo '#!/usr/bin/env node' | cat - ./lib/cli/index.js > temp && mv temp ./lib/cli/index.js",
     "prepublishOnly": "npm run build",
     "test": "jest --verbose",
     "test:watch": "jest --verbose --watch",
