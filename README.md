@@ -220,12 +220,12 @@ We have included a CLI tool that allows you to generate components from CSS file
 Consider this CSS file:
 
 ```css
-footer.footer {
+nav.topBar {
   background-color: #aaa;
   padding: 32px;
 }
 
-footer.footer_fixed_true {
+nav.topBar_fixed_true {
   position: fixed;
   bottom: 0;
   left: 0;
@@ -236,21 +236,21 @@ footer.footer_fixed_true {
 You can generate a component from this file with the following command:
 
 ```bash
-npx @phntms/css-components --css ./footer.css
+npx @phntms/css-components --css styles.module.css
 ```
 
-This will output a file called styles.ts that looks like this:
+This will output a file called `styles.ts` that looks like this:
 
 ```ts
 import { styled } from "@phntms/css-components";
 
 import css from "./test.css";
 
-export const Footer = styled("footer", {
-  css: css.footer,
+export const TopBar = styled("nav", {
+  css: css.topBar,
   variants: {
     fixed: {
-      true: css.footer_fixed_true,
+      true: css.topBar_fixed_true,
     },
   },
 });
@@ -258,14 +258,14 @@ export const Footer = styled("footer", {
 
 ### Possible CSS definitions:
 
-- `a.link: {` Allowing you to define a base style for the component. This means it will be an anchor tag with the class `link`.
-- `a.link_big_true: {` Lets you set the styling for a variant called `big` with the value `true`.
-- `a.link_theme_light_default: {` Same as above but also sets the variant as the default value.
-- `a.link_big_true_theme_light: {` Gives you the ability to define compound variants.
+- `a.link` Allowing you to define a base style for the component. This means it will be an anchor tag with the css class `link`.
+- `a.link_big_true` Lets you set the styling for a variant called `big` with the value `true`.
+- `a.link_theme_light_default` Same as above but also sets the variant as the default value.
+- `a.link_big_true_theme_light` Gives you the ability to define compound variants styles.
 
 ### CLI Options
 
-- `--css` The path to the CSS file you want to generate a component from. This can also be a recursive glob pattern allowing you for example to scan your entire components directory.
+- `--css` The path to the CSS file you want to generate a component from. This can also be a recursive glob pattern allowing you to scan your entire components directory.
 - `--output` The filename for the output file. Defaults to `styles.ts` which will be saved in the same directory as the CSS file.
 
 Example to generate components from all CSS files in the components directory:
