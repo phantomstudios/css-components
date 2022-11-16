@@ -207,10 +207,10 @@ import NextLink from "next/link";
 import css from "./styles.module.css";
 
 const Link = styled(NextLink, {
-  css: shared.link,
+  css: css.link,
   variants: {
     big: {
-      true: [css.big, shared.fontBold],
+      true: css.big,
     },
   },
 });
