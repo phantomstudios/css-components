@@ -195,6 +195,27 @@ const Link = styled("a", {
 });
 ```
 
+### Other Components
+
+You can also style other components from other ecosystems. As long as the component has a `className` prop, styling should propagate.
+
+Example extending the standard Next.js `Link` component:
+
+```tsx
+import { styled } from "@phntms/css-components";
+import Link from "next/link";
+import css from "./styles.module.css";
+
+const Link = styled(Link, {
+  css: shared.link,
+  variants: {
+    big: {
+      true: [css.big, shared.fontBold],
+    },
+  },
+});
+```
+
 ### Type Helper
 
 We have included a helper that allows you to access the types of the variants you have defined.
@@ -237,6 +258,9 @@ You can generate a component from this file with the following command:
 
 ```bash
 npx @phntms/css-components --css styles.module.css
+
+# or if you have the package installed
+npm exec css-components --css styles.module.css
 ```
 
 This will output a file called `styles.ts` that looks like this:
