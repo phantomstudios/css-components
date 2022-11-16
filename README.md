@@ -213,6 +213,67 @@ const Button = styled("button", {
 type ButtonTypes = CSSComponentPropType<typeof Button, "primary">;
 ```
 
+## CLI Tool (Experimental)
+
+We have included a CLI tool that allows you to generate components from CSS files which confirm to a specific naming convention. This is highly experimental and is subject to change.
+
+Consider this CSS file:
+
+```css
+footer.footer {
+  background-color: #aaa;
+  padding: 32px;
+}
+
+footer.footer_fixed_true {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+```
+
+You can generate a component from this file with the following command:
+
+```bash
+npx @phntms/css-components --css ./footer.css
+```
+
+This will output a file called styles.ts that looks like this:
+
+```ts
+import { styled } from "@phntms/css-components";
+
+import css from "./test.css";
+
+export const Footer = styled("footer", {
+  css: css.footer,
+  variants: {
+    fixed: {
+      true: css.footer_fixed_true,
+    },
+  },
+});
+```
+
+### Possible CSS definitions:
+
+- `a.link: {` Allowing you to define a base style for the component. This means it will be an anchor tag with the class `link`.
+- `a.link_big_true: {` Lets you set the styling for a variant called `big` with the value `true`.
+- `a.link_theme_light_default: {` Same as above but also sets the variant as the default value.
+- `a.link_big_true_theme_light: {` Gives you the ability to define compound variants.
+
+### CLI Options
+
+- `--css` The path to the CSS file you want to generate a component from. This can also be a recursive glob pattern allowing you for example to scan your entire components directory.
+- `--output` The filename for the output file. Defaults to `styles.ts` which will be saved in the same directory as the CSS file.
+
+Example to generate components from all CSS files in the components directory:
+
+```bash
+npx @phntms/css-components --css ./src/components/**/*.css --output styles.ts
+```
+
 [npm-image]: https://img.shields.io/npm/v/@phntms/css-components.svg?style=flat-square&logo=react
 [npm-url]: https://npmjs.org/package/@phntms/css-components
 [npm-downloads-image]: https://img.shields.io/npm/dm/@phntms/css-components.svg

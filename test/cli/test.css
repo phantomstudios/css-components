@@ -3,20 +3,20 @@ div.almostEmpty {
 }
 
 footer.footer {
-    background-color: #aaa;
-    padding: 32px;
+  background-color: #aaa;
+  padding: 32px;
 }
 
 footer.footer_fixed_true {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
 
 
 footer.footer_theme_light_default {
-    background-color: white;
+  background-color: white;
 }
 
 footer.footer_theme_light_default a {
@@ -43,17 +43,14 @@ footer.footer_fixed_false_theme_light {
 
 
 a.link {
-    text-decoration: none;
-    margin-right: 16px;
+  text-decoration: none;
+  margin-right: 16px;
 }
 
 a.link:hover {
-    color: #2244ff;
+  color: #2244ff;
 }
 
 a.link_primary_true {
-    font-size: 1.5em;
+  font-size: 1.5em;
 }
-
-
-
