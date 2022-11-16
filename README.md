@@ -203,10 +203,10 @@ Example extending the standard Next.js `Link` component:
 
 ```tsx
 import { styled } from "@phntms/css-components";
-import Link from "next/link";
+import NextLink from "next/link";
 import css from "./styles.module.css";
 
-const Link = styled(Link, {
+const Link = styled(NextLink, {
   css: shared.link,
   variants: {
     big: {
