@@ -291,6 +291,7 @@ export const TopBar = styled("nav", {
 
 - `--css` The path to the CSS file you want to generate a component from. This can also be a recursive glob pattern allowing you to scan your entire components directory.
 - `--output` The filename for the output file. Defaults to `styles.ts` which will be saved in the same directory as the CSS file.
+- `--overwrite` If the output file already exists, this will overwrite it. Defaults to `false`.
 
 Example to generate components from all CSS files in the components directory:
 
