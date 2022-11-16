@@ -2,18 +2,16 @@ import fs from "fs";
 
 import globTool from "glob-promise";
 
+type KeyValuePair = { [key: string]: string };
+
 interface Config {
   [key: string]: {
     element: string;
     css: string;
     variants: {
-      [key: string]: {
-        [key: string]: string;
-      };
+      [key: string]: KeyValuePair;
     };
-    compoundVariants: {
-      [key: string]: string;
-    }[];
+    compoundVariants: KeyValuePair[];
   };
 }
 
@@ -61,7 +59,7 @@ export const stylesToConfig = (styles: string[]) => {
           if (i % 2 !== 0 || i + 1 >= arr.length) return acc;
           acc[cur] = arr[i + 1];
           return acc;
-        }, {} as { [key: string]: string });
+        }, {} as KeyValuePair);
 
         config[component].compoundVariants.push({
           ...vars,
