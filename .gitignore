@@ -8,3 +8,4 @@ lib
 !test/*
 .idea
 .DS_Store
+test/cli/styles.ts
