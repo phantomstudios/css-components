@@ -154,6 +154,46 @@ describe("supports variants and compound variants", () => {
     expect(container.firstChild).not.toHaveClass("colorSecondary");
   });
 
+  it("should work with compound variants and defaults", async () => {
+    const Button = styled("button", {
+      css: "root",
+      variants: {
+        border: {
+          true: "borderTrue",
+        },
+        color: {
+          primary: "colorPrimary",
+          secondary: "colorSecondary",
+        },
+      },
+      compoundVariants: [
+        {
+          border: true,
+          color: "primary",
+          css: "borderPrimary",
+        },
+        {
+          border: true,
+          color: "secondary",
+          css: "borderSecondary",
+        },
+      ],
+      defaultVariants: {
+        border: true,
+        color: "primary",
+      },
+    });
+
+    const { container } = render(<Button />);
+
+    expect(container.firstChild).toHaveClass("root");
+    expect(container.firstChild).toHaveClass("borderTrue");
+    expect(container.firstChild).toHaveClass("colorPrimary");
+    expect(container.firstChild).toHaveClass("borderPrimary");
+    expect(container.firstChild).not.toHaveClass("borderSecondary");
+    expect(container.firstChild).not.toHaveClass("colorSecondary");
+  });
+
   it("Should support default variants", async () => {
     const Button = styled("button", {
       css: "test",
