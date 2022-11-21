@@ -54,7 +54,7 @@ export const styled = <
       if (config?.compoundVariants) {
         const matches = findMatchingCompoundVariants(
           config.compoundVariants,
-          props
+          mergedProps
         );
 
         matches.forEach((match) => {
