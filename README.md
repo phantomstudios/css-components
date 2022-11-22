@@ -242,7 +242,7 @@ const Input = styled("input", {
 We have included a helper that allows you to access the types of the variants you have defined.
 
 ```tsx
-import { CSSComponentPropType } from "@phntms/css-components";
+import { VariantProps } from "@phntms/css-components";
 import css from "./styles.module.css";
 
 const Button = styled("button", {
@@ -252,7 +252,8 @@ const Button = styled("button", {
   },
 });
 
-type ButtonTypes = CSSComponentPropType<typeof Button, "primary">;
+type ButtonVariants = CSSComponentPropType<typeof Button>;
+type PrimaryType = ButtonVariants["primary"];
 ```
 
 ## CLI Tool (Experimental)

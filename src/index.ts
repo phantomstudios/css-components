@@ -2,13 +2,13 @@ import { createElement, forwardRef } from "react";
 
 import {
   CSSComponentConfig,
-  cssType,
+  CSS,
   PolymorphicComponent,
   variantsType,
 } from "./type";
 import { findMatchingCompoundVariants, flattenCss } from "./utils";
 
-export { CSSComponentConfig, CSSComponentPropType } from "./type";
+export { CSSComponentConfig, CSS, VariantProps } from "./type";
 
 export const styled = <
   V extends variantsType | object,
@@ -43,7 +43,7 @@ export const styled = <
           if (variant && variant.hasOwnProperty(mergedProps[key])) {
             const selector = variant[
               mergedProps[key] as keyof typeof variant
-            ] as cssType;
+            ] as CSS;
             componentStyles.push(flattenCss(selector));
           }
         }

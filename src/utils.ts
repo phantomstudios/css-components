@@ -1,4 +1,4 @@
-import { cssType, variantValue } from "./type";
+import { CSS, variantValue } from "./type";
 
 export const findMatchingCompoundVariants = (
   compoundVariants: {
@@ -14,5 +14,5 @@ export const findMatchingCompoundVariants = (
     )
   );
 
-export const flattenCss = (css: cssType) =>
+export const flattenCss = (css: CSS) =>
   Array.isArray(css) ? css.join(" ") : css;

@@ -7,7 +7,7 @@ import React from "react";
 import { render } from "@testing-library/react";
 import { expectTypeOf } from "expect-type";
 
-import { CSSComponentPropType, styled } from "../src";
+import { VariantProps, styled } from "../src";
 
 describe("Basic functionality", () => {
   it("should return the correct type of DOM node", async () => {
@@ -278,7 +278,7 @@ describe("supports more exotic setups", () => {
       variants: { primary: { true: "primary" } },
     });
 
-    type primaryType = CSSComponentPropType<typeof Button, "primary">;
+    type primaryType = VariantProps<typeof Button>["primary"];
 
     expectTypeOf<primaryType>().toMatchTypeOf<boolean | undefined>();
   });
