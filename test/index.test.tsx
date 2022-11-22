@@ -52,7 +52,7 @@ describe("Basic functionality", () => {
   it("should provide typescript support for built in types", async () => {
     const Input = styled("input");
     const onChange = jest.fn();
-    const { container } = render(<Input value={"test"} onChange={onChange} />);
+    const { container } = render(<Input value="test" onChange={onChange} />);
     expect(container.firstChild).toHaveAttribute("value", "test");
   });
 
@@ -291,5 +291,155 @@ describe("supports more exotic setups", () => {
     const { container } = render(<Option selected>Option 1</Option>);
 
     expect(container.firstChild).toHaveClass("primary");
+  });
+});
+
+describe("supports inheritance", () => {
+  it("should handle component composition", async () => {
+    const BaseButton = styled("button", {
+      css: "baseButton",
+      variants: {
+        big: { true: "big" },
+      },
+    });
+
+    const CheckoutButton = styled(BaseButton, {
+      css: "checkoutButton",
+    });
+
+    const { container } = render(<CheckoutButton big />);
+
+    expect(container.firstChild?.nodeName).toEqual("BUTTON");
+    expect(container.firstChild).toHaveClass("baseButton");
+    expect(container.firstChild).toHaveClass("checkoutButton");
+    expect(container.firstChild).toHaveClass("big");
+  });
+
+  it("should handle component composition when overriding variants", async () => {
+    const BaseButton = styled("button", {
+      css: "baseButton",
+      variants: {
+        big: { true: "big" },
+      },
+    });
+
+    const CheckoutButton = styled(BaseButton, {
+      css: "checkoutButton",
+      variants: {
+        big: { true: "checkoutButtonBig" },
+      },
+    });
+
+    const { container } = render(<CheckoutButton big />);
+
+    expect(container.firstChild?.nodeName).toEqual("BUTTON");
+    expect(container.firstChild).toHaveClass("baseButton");
+    expect(container.firstChild).toHaveClass("checkoutButton");
+    expect(container.firstChild).toHaveClass("big");
+    expect(container.firstChild).toHaveClass("checkoutButtonBig");
+  });
+
+  it("should handle component composition with default variants", async () => {
+    const BaseButton = styled("button", {
+      css: "baseButton",
+      variants: {
+        big: { true: "baseButtonBig" },
+        theme: {
+          primary: "baseButtonPrimary",
+          secondary: "baseButtonSecondary",
+        },
+        anotherBool: { true: "baseButtonAnotherBool" },
+      },
+      defaultVariants: {
+        big: true,
+        theme: "primary",
+        anotherBool: true,
+      },
+    });
+
+    const CheckoutButton = styled(BaseButton, {
+      css: "checkoutButton",
+      variants: {
+        big: { true: "checkoutButtonBig" },
+        theme: {
+          primary: "checkoutButtonPrimary",
+          secondary: "checkoutButtonSecondary",
+        },
+        anotherBool: { true: "checkoutButtonAnotherBool" },
+      },
+      defaultVariants: {
+        big: true,
+        anotherBool: true,
+        theme: "primary",
+      },
+    });
+
+    const { container } = render(<CheckoutButton />);
+
+    expect(container.firstChild?.nodeName).toEqual("BUTTON");
+
+    expect(container.firstChild).toHaveClass("baseButton");
+    expect(container.firstChild).toHaveClass("baseButtonBig");
+    expect(container.firstChild).toHaveClass("baseButtonPrimary");
+    expect(container.firstChild).toHaveClass("baseButtonAnotherBool");
+
+    expect(container.firstChild).toHaveClass("checkoutButton");
+    expect(container.firstChild).toHaveClass("checkoutButtonBig");
+    expect(container.firstChild).toHaveClass("checkoutButtonPrimary");
+    expect(container.firstChild).toHaveClass("checkoutButtonAnotherBool");
+  });
+
+  it("variant props should not propagate to the DOM by default", async () => {
+    const Input = styled("input", {
+      css: "input",
+      variants: {
+        big: { true: "big" },
+      },
+    });
+
+    const { container } = render(<Input big />);
+
+    expect(container.firstChild).toHaveClass("big");
+    expect(container.firstChild).not.toHaveAttribute("big");
+  });
+
+  it("css components should not block intrinsic props that are not styled", async () => {
+    const Input = styled("input");
+    const onChange = jest.fn();
+    const { container } = render(<Input value="test" onChange={onChange} />);
+    expect(container.firstChild).toHaveAttribute("value", "test");
+  });
+
+  it("variants should allow intrinsic props to pass through to the DOM", async () => {
+    const Input = styled("input", {
+      css: "input",
+      variants: {
+        type: { text: "textInput" },
+      },
+      domPassthrough: ["type"],
+    });
+
+    const { container } = render(<Input type="text" />);
+
+    expect(container.firstChild?.nodeName).toEqual("INPUT");
+    expect(container.firstChild).toHaveClass("textInput");
+    expect(container.firstChild).toHaveAttribute("type", "text");
+  });
+
+  it("variants should allow intrinsic bool props to pass through to the DOM", async () => {
+    const Input = styled("input", {
+      css: "input",
+      variants: {
+        readOnly: { true: "readOnly" },
+      },
+      domPassthrough: ["readOnly"],
+    });
+
+    const { container } = render(<Input type="text" readOnly />);
+
+    expect(container.firstChild?.nodeName).toEqual("INPUT");
+
+    expect(container.firstChild).toHaveClass("readOnly");
+    expect(container.firstChild).toHaveAttribute("readOnly");
   });
 });

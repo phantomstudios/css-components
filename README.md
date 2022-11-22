@@ -216,6 +216,27 @@ const Link = styled(NextLink, {
 });
 ```
 
+### DOM Shielding
+
+By default variant values do not end up propagating to the final DOM element. This is to stop React specific runtime errors from occurring. If you do indeed want to pass a variant value to the DOM element, you can use the `domPassthrough` option.
+
+In the following example, `readOnly` is an intrinsic HTML attribute that we both want to style, but also continue to pass through to the DOM element.
+
+```tsx
+import { CSSComponentPropType } from "@phntms/css-components";
+import css from "./styles.module.css";
+
+const Input = styled("input", {
+  css: css.root,
+  variants: {
+    readOnly: {
+      true: css.disabledStyle,
+    },
+  },
+  domPassthrough: ["readOnly"],
+});
+```
+
 ### Type Helper
 
 We have included a helper that allows you to access the types of the variants you have defined.
