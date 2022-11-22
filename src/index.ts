@@ -22,12 +22,13 @@ export const styled = <
       const mergedProps = { ...config?.defaultVariants, ...props } as {
         [key: string]: string;
       };
+
       // Initialize variables to store the new props and styles
       const componentProps: { [key: string]: unknown } = {};
       const componentStyles: string[] = [];
 
       // Pass through an existing className if it exists
-      if (props.className) componentStyles.push(props.className);
+      if (mergedProps.className) componentStyles.push(mergedProps.className);
 
       // Add the base style(s)
       if (config?.css) componentStyles.push(flattenCss(config.css));
@@ -35,8 +36,8 @@ export const styled = <
       // Pass through the ref
       if (ref) componentProps.ref = ref;
 
-      // Apply any variant styles
       Object.keys(mergedProps).forEach((key) => {
+        // Apply any variant styles
         if (config?.variants && config.variants.hasOwnProperty(key)) {
           const variant = config.variants[key as keyof typeof config.variants];
           if (variant && variant.hasOwnProperty(mergedProps[key])) {
@@ -45,9 +46,21 @@ export const styled = <
             ] as cssType;
             componentStyles.push(flattenCss(selector));
           }
-        } else {
-          componentProps[key] = props[key];
         }
+
+        const isDomNode = typeof element === "string";
+        const isVariant =
+          config?.variants && config.variants.hasOwnProperty(key);
+
+        // Only pass through the prop if it's not a variant or been told to pass through
+        if (
+          isDomNode &&
+          isVariant &&
+          !config?.domPassthrough?.includes(key as keyof V)
+        )
+          return;
+
+        componentProps[key] = mergedProps[key];
       });
 
       // Apply any compound variant styles
