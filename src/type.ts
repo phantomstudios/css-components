@@ -61,7 +61,7 @@ export type PolymorphicComponent<
  * The CSS Component Config type.
  */
 export interface CSSComponentConfig<V> {
-  css?: cssType;
+  css?: CSS;
   variants?: V;
   compoundVariants?: CompoundVariantType<V>[];
   defaultVariants?: {
@@ -73,16 +73,15 @@ export interface CSSComponentConfig<V> {
 /**
  * Allows you to extract a type for variant values.
  */
-export type CSSComponentPropType<
+export type VariantProps<
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  C extends keyof JSX.IntrinsicElements | JSXElementConstructor<any>,
-  P extends keyof React.ComponentProps<C>
-> = React.ComponentProps<C>[P];
+  C extends keyof JSX.IntrinsicElements | JSXElementConstructor<any>
+> = React.ComponentProps<C>;
 
 /**
  * CSS can be passed in as either a string or an array of strings.
  */
-export type cssType = string | string[];
+export type CSS = string | string[];
 
 export type variantValue = string | number | boolean | string[];
 
@@ -90,7 +89,7 @@ export type variantValue = string | number | boolean | string[];
  * An object of variants, and how they map to CSS styles
  */
 export type variantsType = Partial<{
-  [key: string]: { [key: string | number]: cssType };
+  [key: string]: { [key: string | number]: CSS };
 }>;
 
 /**
@@ -111,5 +110,5 @@ export type VariantOptions<V> = {
  * Returns a type object for compound variants.
  */
 export type CompoundVariantType<V> = VariantOptions<V> & {
-  css: cssType;
+  css: CSS;
 };

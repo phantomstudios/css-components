@@ -223,7 +223,7 @@ By default variant values do not end up propagating to the final DOM element. Th
 In the following example, `readOnly` is an intrinsic HTML attribute that we both want to style, but also continue to pass through to the DOM element.
 
 ```tsx
-import { CSSComponentPropType } from "@phntms/css-components";
+import { styled } from "@phntms/css-components";
 import css from "./styles.module.css";
 
 const Input = styled("input", {
@@ -242,7 +242,7 @@ const Input = styled("input", {
 We have included a helper that allows you to access the types of the variants you have defined.
 
 ```tsx
-import { CSSComponentPropType } from "@phntms/css-components";
+import { VariantProps } from "@phntms/css-components";
 import css from "./styles.module.css";
 
 const Button = styled("button", {
@@ -252,7 +252,8 @@ const Button = styled("button", {
   },
 });
 
-type ButtonTypes = CSSComponentPropType<typeof Button, "primary">;
+type ButtonVariants = VariantProps<typeof Button>;
+type PrimaryType = ButtonVariants["primary"];
 ```
 
 ## CLI Tool (Experimental)
