@@ -223,7 +223,7 @@ By default variant values do not end up propagating to the final DOM element. Th
 In the following example, `readOnly` is an intrinsic HTML attribute that we both want to style, but also continue to pass through to the DOM element.
 
 ```tsx
-import { CSSComponentPropType } from "@phntms/css-components";
+import { styled } from "@phntms/css-components";
 import css from "./styles.module.css";
 
 const Input = styled("input", {
