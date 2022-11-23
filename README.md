@@ -252,7 +252,7 @@ const Button = styled("button", {
   },
 });
 
-type ButtonVariants = CSSComponentPropType<typeof Button>;
+type ButtonVariants = VariantProps<typeof Button>;
 type PrimaryType = ButtonVariants["primary"];
 ```
 
