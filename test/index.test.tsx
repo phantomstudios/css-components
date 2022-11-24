@@ -389,7 +389,7 @@ describe("supports inheritance", () => {
     expect(container.firstChild).toHaveClass("checkoutButtonAnotherBool");
   });
 
-  it("variant props should not propagate to the DOM by default", async () => {
+  it("stops variant props propogating to the DOM by default", async () => {
     const Input = styled("input", {
       css: "input",
       variants: {
@@ -403,14 +403,14 @@ describe("supports inheritance", () => {
     expect(container.firstChild).not.toHaveAttribute("big");
   });
 
-  it("css components should not block intrinsic props that are not styled", async () => {
+  it("does not block intrinsic props that are not styled", async () => {
     const Input = styled("input");
     const onChange = jest.fn();
     const { container } = render(<Input value="test" onChange={onChange} />);
     expect(container.firstChild).toHaveAttribute("value", "test");
   });
 
-  it("variants should allow intrinsic props to pass through to the DOM", async () => {
+  it("allows variants to pass intrinsic props through to the DOM", async () => {
     const Input = styled("input", {
       css: "input",
       variants: {
@@ -426,7 +426,7 @@ describe("supports inheritance", () => {
     expect(container.firstChild).toHaveAttribute("type", "text");
   });
 
-  it("variants should allow intrinsic bool props to pass through to the DOM", async () => {
+  it("allows variants to pass intrinsic bool props through to the DOM", async () => {
     const Input = styled("input", {
       css: "input",
       variants: {
