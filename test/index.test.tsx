@@ -37,6 +37,15 @@ describe("Basic functionality", () => {
     expect(container.firstChild).toHaveClass("summary");
   });
 
+  it("should pass through classNames for composed css-components", async () => {
+    const BaseParagraph = styled("p", { css: "baseParagraph" });
+    const Paragraph = styled(BaseParagraph, { css: "paragraph" });
+    const { container } = render(<Paragraph>Hello</Paragraph>);
+
+    expect(container.firstChild).toHaveClass("baseParagraph");
+    expect(container.firstChild).toHaveClass("paragraph");
+  });
+
   it("should pass through multiple children", async () => {
     const Article = styled("article");
     const { container } = render(
@@ -328,6 +337,7 @@ describe("supports inheritance", () => {
       variants: {
         big: { true: "checkoutButtonBig" },
       },
+      passthrough: ["big"],
     });
 
     const { container } = render(<CheckoutButton big />);
@@ -416,7 +426,7 @@ describe("supports inheritance", () => {
       variants: {
         type: { text: "textInput" },
       },
-      domPassthrough: ["type"],
+      passthrough: ["type"],
     });
 
     const { container } = render(<Input type="text" />);
@@ -432,7 +442,7 @@ describe("supports inheritance", () => {
       variants: {
         readOnly: { true: "readOnly" },
       },
-      domPassthrough: ["readOnly"],
+      passthrough: ["readOnly"],
     });
 
     const { container } = render(<Input type="text" readOnly />);

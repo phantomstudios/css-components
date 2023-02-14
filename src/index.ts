@@ -48,17 +48,11 @@ export const styled = <
           }
         }
 
-        const isDomNode = typeof element === "string";
         const isVariant =
           config?.variants && config.variants.hasOwnProperty(key);
 
         // Only pass through the prop if it's not a variant or been told to pass through
-        if (
-          isDomNode &&
-          isVariant &&
-          !config?.domPassthrough?.includes(key as keyof V)
-        )
-          return;
+        if (isVariant && !config?.passthrough?.includes(key as keyof V)) return;
 
         componentProps[key] = mergedProps[key];
       });

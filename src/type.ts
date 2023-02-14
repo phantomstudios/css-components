@@ -67,7 +67,7 @@ export interface CSSComponentConfig<V> {
   defaultVariants?: {
     [Property in keyof V]?: BooleanIfStringBoolean<keyof V[Property]>;
   };
-  domPassthrough?: (keyof V)[];
+  passthrough?: (keyof V)[];
 }
 
 /**
