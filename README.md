@@ -216,9 +216,9 @@ const Link = styled(NextLink, {
 });
 ```
 
-### DOM Shielding
+### Passthrough
 
-By default variant values do not end up propagating to the final DOM element. This is to stop React specific runtime errors from occurring. If you do indeed want to pass a variant value to the DOM element, you can use the `domPassthrough` option.
+By default variant values do not end up propagating to the element it is extending and is exclusively used for styling the current component. This is to stop React specific runtime errors from occurring with regards to the DOM. If you do indeed want to pass a variant value to the element you are extending, you can use the `passthrough` option.
 
 In the following example, `readOnly` is an intrinsic HTML attribute that we both want to style, but also continue to pass through to the DOM element.
 
@@ -233,7 +233,7 @@ const Input = styled("input", {
       true: css.disabledStyle,
     },
   },
-  domPassthrough: ["readOnly"],
+  passthrough: ["readOnly"],
 });
 ```
 
