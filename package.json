@@ -29,6 +29,7 @@
     "test": "jest --verbose",
     "test:watch": "jest --verbose --watch",
     "test:cli": "npm run build && node lib/cli/index.js --css \"test/**/*.css\"",
+    "test:cli-sass": "npm run build && node lib/cli/index.js --css \"test/**/*.scss\"",
     "coverage": "jest --coverage",
     "lint": "NODE_ENV=test npm-run-all --parallel lint:*",
     "lint:js": "eslint \"src/**/*.{js,jsx,ts,tsx}\"",
@@ -73,6 +74,7 @@
   "dependencies": {
     "glob": "^8.0.3",
     "glob-promise": "^6.0.2",
+    "sass": "^1.62.0",
     "yargs": "^17.6.2"
   }
 }
