@@ -65,11 +65,7 @@ export const styled = <
         );
 
         matches.forEach((match) => {
-          if (Array.isArray(match.css)) {
-            componentStyles.push(match.css.join(" "));
-          } else if (typeof match.css === "string") {
-            componentStyles.push(match.css);
-          }
+          componentStyles.push(flattenCss(match.css as CSS));
         });
       }
 
