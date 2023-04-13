@@ -284,13 +284,13 @@ Or using SCSS (Sassy CSS):
 nav.topBar {
   background-color: #aaa;
   padding: 32px;
-  
+
   &_fixed_true {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-    }
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
 }
 ```
 
