@@ -258,11 +258,12 @@ type PrimaryType = ButtonVariants["primary"];
 
 ## CLI Tool (Experimental)
 
-We have included a CLI tool that allows you to generate components from CSS files which confirm to a specific naming convention. This is highly experimental and is subject to change.
+We have included a CLI tool that allows you to generate components from CSS and SCSS files which confirm to a specific naming convention. This is highly experimental and is subject to change.
 
 Consider this CSS file:
 
 ```css
+/* styles.module.css */
 nav.topBar {
   background-color: #aaa;
   padding: 32px;
@@ -276,13 +277,35 @@ nav.topBar_fixed_true {
 }
 ```
 
-You can generate a component from this file with the following command:
+Or using SCSS (Sassy CSS):
+
+```scss
+// styles.module.scss
+nav.topBar {
+  background-color: #aaa;
+  padding: 32px;
+  
+  &_fixed_true {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+}
+```
+
+You can generate a component from this files with the following command:
 
 ```bash
+# For CSS
 npx @phntms/css-components --css styles.module.css
+
+# For SCSS
+npx @phntms/css-components --css styles.module.scss
 
 # or if you have the package installed
 npx css-components --css styles.module.css
+npx css-components --css styles.module.scss
 ```
 
 This will output a file called `styles.ts` that looks like this:
@@ -311,14 +334,21 @@ export const TopBar = styled("nav", {
 
 ### CLI Options
 
-- `--css` The path to the CSS file you want to generate a component from. This can also be a recursive glob pattern allowing you to scan your entire components directory.
+- `--css` The path to the CSS or SCSS file you want to generate a component from. This can also be a recursive glob pattern allowing you to scan your entire components directory.
 - `--output` The filename for the output file. Defaults to `styles.ts` which will be saved in the same directory as the CSS file.
 - `--overwrite` If the output file already exists, this will overwrite it. Defaults to `false`.
 
-Example to generate components from all CSS files in the components directory:
+Example to generate components from all CSS and SCSS files in the components directory:
 
 ```bash
+# From CSS
 npx @phntms/css-components --css ./src/components/**/*.css --output styles.ts
+
+# Or from SCSS
+npx @phntms/css-components --css ./src/components/**/*.scss --output styles.ts
+
+# Or from both CSS and SCSS
+npx @phntms/css-components --css ./src/components/**/*.{css,scss} --output styles.ts
 ```
 
 [npm-image]: https://img.shields.io/npm/v/@phntms/css-components.svg?style=flat-square&logo=react
