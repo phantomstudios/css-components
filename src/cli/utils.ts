@@ -1,6 +1,8 @@
 import fs from "fs";
+import { extname } from "path";
 
 import globTool from "glob-promise";
+import sass from "sass";
 
 type KeyValuePair = { [key: string]: string };
 
@@ -16,8 +18,11 @@ interface Config {
 }
 
 export const extractStyles = (path: string) => {
-  const buffer = fs.readFileSync(path);
-  const fileContent = buffer.toString();
+  const fileContent =
+    extname(path) === ".scss"
+      ? sass.compile(path).css
+      : fs.readFileSync(path).toString();
+
   return fileContent.match(
     /([a-zA-Z_]*)(?:[.]{1})([a-zA-Z_]+[\w\-_]*)(?:[\s\.\,\{\>#\:]{0})/gim
   );
