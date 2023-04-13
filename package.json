@@ -1,7 +1,7 @@
 {
   "name": "@phntms/css-components",
   "description": "At its core, css-components is a simple wrapper around standard CSS. It allows you to write your CSS how you wish then compose them into a component ready to be used in React.",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "homepage": "https://github.com/phantomstudios/css-components#readme",
