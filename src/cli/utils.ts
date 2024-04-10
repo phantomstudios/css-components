@@ -78,7 +78,7 @@ export const stylesToConfig = (styles: string[]) => {
 
 export const generateOutput = (config: Config, cssFilename: string) => {
   let s = "";
-  s += `import { styled } from "@phntms/css-components";\n\n`;
+  s += `import { styled } from "@phantomstudios/css-components";\n\n`;
   s += `import css from "./${cssFilename}";\n\n`;
 
   Object.keys(config).forEach((key) => {
