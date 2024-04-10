@@ -1,4 +1,4 @@
-# @phntms/css-components
+# @phantomstudios/css-components
 
 [![NPM version][npm-image]][npm-url]
 [![Actions Status][ci-image]][ci-url]
@@ -13,7 +13,7 @@ At its core, css-components is a simple wrapper around standard CSS. It allows y
 Here is a minimal example of a button component with an optional variant:
 
 ```ts
-import { styled } from "@phntms/css-components";
+import { styled } from "@phantomstudios/css-components";
 import css from "./styles.module.css";
 
 export const Button = styled("button", {
@@ -44,7 +44,7 @@ export const App = () => (
 Install this package with `npm`.
 
 ```bash
-npm i @phntms/css-components
+npm i @phantomstudios/css-components
 ```
 
 ## Usage
@@ -67,7 +67,7 @@ components/Button/styles.module.css
 components/Button/styles.ts
 
 ```ts
-import { styled } from "@phntms/css-components";
+import { styled } from "@phantomstudios/css-components";
 import css from "./styles.module.css";
 
 export const StyledButton = styled("button", {
@@ -181,7 +181,7 @@ const StyledButton = styled("button", {
 Wherever you specify a css selector, you can also pass in an array of classes to help composing and reusing styles.
 
 ```tsx
-import { styled } from "@phntms/css-components";
+import { styled } from "@phantomstudios/css-components";
 import shared from "../sharedstyles.module.css";
 import css from "./styles.module.css";
 
@@ -202,7 +202,7 @@ You can also style other components from other ecosystems. As long as the compon
 Example extending the standard Next.js `Link` component:
 
 ```tsx
-import { styled } from "@phntms/css-components";
+import { styled } from "@phantomstudios/css-components";
 import NextLink from "next/link";
 import css from "./styles.module.css";
 
@@ -223,7 +223,7 @@ By default variant values do not end up propagating to the element it is extendi
 In the following example, `readOnly` is an intrinsic HTML attribute that we both want to style, but also continue to pass through to the DOM element.
 
 ```tsx
-import { styled } from "@phntms/css-components";
+import { styled } from "@phantomstudios/css-components";
 import css from "./styles.module.css";
 
 const Input = styled("input", {
@@ -242,7 +242,7 @@ const Input = styled("input", {
 We have included a helper that allows you to access the types of the variants you have defined.
 
 ```tsx
-import { VariantProps } from "@phntms/css-components";
+import { VariantProps } from "@phantomstudios/css-components";
 import css from "./styles.module.css";
 
 const Button = styled("button", {
@@ -298,10 +298,10 @@ You can generate a component from this files with the following command:
 
 ```bash
 # For CSS
-npx @phntms/css-components --css styles.module.css
+npx @phantomstudios/css-components --css styles.module.css
 
 # For SCSS
-npx @phntms/css-components --css styles.module.scss
+npx @phantomstudios/css-components --css styles.module.scss
 
 # or if you have the package installed
 npx css-components --css styles.module.css
@@ -311,7 +311,7 @@ npx css-components --css styles.module.scss
 This will output a file called `styles.ts` that looks like this:
 
 ```ts
-import { styled } from "@phntms/css-components";
+import { styled } from "@phantomstudios/css-components";
 
 import css from "./test.css";
 
@@ -342,18 +342,18 @@ Example to generate components from all CSS and SCSS files in the components dir
 
 ```bash
 # From CSS
-npx @phntms/css-components --css ./src/components/**/*.css --output styles.ts
+npx @phantomstudios/css-components --css ./src/components/**/*.css --output styles.ts
 
 # Or from SCSS
-npx @phntms/css-components --css ./src/components/**/*.scss --output styles.ts
+npx @phantomstudios/css-components --css ./src/components/**/*.scss --output styles.ts
 
 # Or from both CSS and SCSS
-npx @phntms/css-components --css ./src/components/**/*.{css,scss} --output styles.ts
+npx @phantomstudios/css-components --css ./src/components/**/*.{css,scss} --output styles.ts
 ```
 
-[npm-image]: https://img.shields.io/npm/v/@phntms/css-components.svg?style=flat-square&logo=react
-[npm-url]: https://npmjs.org/package/@phntms/css-components
-[npm-downloads-image]: https://img.shields.io/npm/dm/@phntms/css-components.svg
-[npm-downloads-url]: https://npmcharts.com/compare/@phntms/css-components?minimal=true
+[npm-image]: https://img.shields.io/npm/v/@phantomstudios/css-components.svg?style=flat-square&logo=react
+[npm-url]: https://npmjs.org/package/@phantomstudios/css-components
+[npm-downloads-image]: https://img.shields.io/npm/dm/@phantomstudios/css-components.svg
+[npm-downloads-url]: https://npmcharts.com/compare/@phantomstudios/css-components?minimal=true
 [ci-image]: https://github.com/phantomstudios/css-components/workflows/test/badge.svg
 [ci-url]: https://github.com/phantomstudios/css-components/actions
