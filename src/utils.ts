@@ -16,3 +16,6 @@ export const findMatchingCompoundVariants = (
 
 export const flattenCss = (css: CSS) =>
   Array.isArray(css) ? css.join(" ") : css;
+
+export const componentDisplayName = (component: any) =>
+  typeof window == undefined ? component.displayName : component.toString();
