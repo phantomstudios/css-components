@@ -8,6 +8,9 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: read
+
     strategy:
       matrix:
         node-version: [18.x, 20.x, 22.x]
@@ -32,6 +35,10 @@ jobs:
   publish-npm:
     needs: test
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
