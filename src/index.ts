@@ -6,7 +6,11 @@ import {
   PolymorphicComponent,
   variantsType,
 } from "./type";
-import { findMatchingCompoundVariants, flattenCss } from "./utils";
+import {
+  componentDisplayName,
+  findMatchingCompoundVariants,
+  flattenCss,
+} from "./utils";
 
 export { CSSComponentConfig, CSS, VariantProps } from "./type";
 
@@ -70,7 +74,7 @@ export const styled = <
       }
 
       componentProps.className = componentStyles.join(" ");
-      styledComponent.displayName = element.toString();
+      styledComponent.displayName = componentDisplayName(element);
       return createElement(element, componentProps);
     }
   );
