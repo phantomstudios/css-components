@@ -1,14 +1,16 @@
 import js from '@eslint/js';
 import tseslint from '@typescript-eslint/eslint-plugin';
 import tsparser from '@typescript-eslint/parser';
+// @ts-ignore - Plugin doesn't have proper ESLint 9 types yet
 import importPlugin from 'eslint-plugin-import';
+// @ts-ignore - Plugin doesn't have proper ESLint 9 types yet
 import prettier from 'eslint-plugin-prettier';
+// @ts-ignore - Plugin doesn't have proper ESLint 9 types yet
 import react from 'eslint-plugin-react';
+// @ts-ignore - Plugin doesn't have proper ESLint 9 types yet
 import reactHooks from 'eslint-plugin-react-hooks';
-import prettierConfig from 'eslint-config-prettier';
-import type { Linter } from 'eslint';
 
-const config: Linter.FlatConfig[] = [
+export default [
   js.configs.recommended,
   {
     files: ['src/**/*.{js,jsx,ts,tsx}'],
@@ -22,41 +24,16 @@ const config: Linter.FlatConfig[] = [
         },
       },
       globals: {
+        // Only keep React global for JSX without explicit React imports
         React: 'writable',
-        console: 'readonly',
-        process: 'readonly',
-        Buffer: 'readonly',
-        __dirname: 'readonly',
-        __filename: 'readonly',
-        module: 'readonly',
-        require: 'readonly',
-        exports: 'readonly',
-        global: 'readonly',
-        window: 'readonly',
-        document: 'readonly',
-        navigator: 'readonly',
-        HTMLElement: 'readonly',
-        Element: 'readonly',
-        Node: 'readonly',
-        Event: 'readonly',
-        EventTarget: 'readonly',
-        jest: 'readonly',
-        describe: 'readonly',
-        it: 'readonly',
-        test: 'readonly',
-        expect: 'readonly',
-        beforeEach: 'readonly',
-        afterEach: 'readonly',
-        beforeAll: 'readonly',
-        afterAll: 'readonly',
       },
     },
     plugins: {
-      '@typescript-eslint': tseslint as any,
-      react: react as any,
-      'react-hooks': reactHooks as any,
-      import: importPlugin as any,
-      prettier: prettier as any,
+      '@typescript-eslint': tseslint,
+      react,
+      'react-hooks': reactHooks,
+      import: importPlugin,
+      prettier,
     },
     settings: {
       react: {
@@ -109,5 +86,3 @@ const config: Linter.FlatConfig[] = [
     },
   },
 ];
-
-export default config;
