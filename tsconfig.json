@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es2018",
     "module": "commonjs",
-    "lib": ["dom", "es2015"],
+    "lib": ["dom", "es2018"],
     "jsx": "react",
     "declaration": true,
     "declarationMap": true,
