@@ -12,10 +12,10 @@ export { CSSComponentConfig, CSS, VariantProps } from "./type";
 
 export const styled = <
   V extends variantsType | object,
-  E extends React.ElementType
+  E extends React.ElementType,
 >(
   element: E,
-  config?: CSSComponentConfig<V>
+  config?: CSSComponentConfig<V>,
 ) => {
   const styledComponent = forwardRef<E, { [key: string]: string }>(
     (props, ref) => {
@@ -38,9 +38,15 @@ export const styled = <
 
       Object.keys(mergedProps).forEach((key) => {
         // Apply any variant styles
-        if (config?.variants && config.variants.hasOwnProperty(key)) {
+        if (
+          config?.variants &&
+          Object.prototype.hasOwnProperty.call(config.variants, key)
+        ) {
           const variant = config.variants[key as keyof typeof config.variants];
-          if (variant && variant.hasOwnProperty(mergedProps[key])) {
+          if (
+            variant &&
+            Object.prototype.hasOwnProperty.call(variant, mergedProps[key])
+          ) {
             const selector = variant[
               mergedProps[key] as keyof typeof variant
             ] as CSS;
@@ -49,7 +55,8 @@ export const styled = <
         }
 
         const isVariant =
-          config?.variants && config.variants.hasOwnProperty(key);
+          config?.variants &&
+          Object.prototype.hasOwnProperty.call(config.variants, key);
 
         // Only pass through the prop if it's not a variant or been told to pass through
         if (isVariant && !config?.passthrough?.includes(key as keyof V)) return;
@@ -61,7 +68,7 @@ export const styled = <
       if (config?.compoundVariants) {
         const matches = findMatchingCompoundVariants(
           config.compoundVariants,
-          mergedProps
+          mergedProps,
         );
 
         matches.forEach((match) => {
@@ -72,7 +79,7 @@ export const styled = <
       componentProps.className = componentStyles.join(" ");
       styledComponent.displayName = element.toString();
       return createElement(element, componentProps);
-    }
+    },
   );
 
   return styledComponent as PolymorphicComponent<E, V>;

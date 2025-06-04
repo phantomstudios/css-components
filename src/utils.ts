@@ -6,12 +6,12 @@ export const findMatchingCompoundVariants = (
   }[],
   props: {
     [key: string]: variantValue;
-  }
+  },
 ) =>
   compoundVariants.filter((compoundVariant) =>
     Object.keys(compoundVariant).every(
-      (key) => key === "css" || compoundVariant[key] === props[key]
-    )
+      (key) => key === "css" || compoundVariant[key] === props[key],
+    ),
   );
 
 export const flattenCss = (css: CSS) =>

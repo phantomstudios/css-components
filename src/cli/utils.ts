@@ -24,7 +24,7 @@ export const extractStyles = (path: string) => {
       : fs.readFileSync(path).toString();
 
   return fileContent.match(
-    /([a-zA-Z_]*)(?:[.]{1})([a-zA-Z_]+[\w\-_]*)(?:[\s\.\,\{\>#\:]{0})/gim
+    /([a-zA-Z_]*)(?:[.]{1})([a-zA-Z_]+[\w\-_]*)(?:[\s.,{>#:]{0})/gim,
   );
 };
 

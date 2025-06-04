@@ -11,7 +11,7 @@ import { JSXElementConstructor } from "react";
 // A more precise version of just React.ComponentPropsWithoutRef on its own
 export type PropsOf<
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  C extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>
+  C extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>,
 > = JSX.LibraryManagedAttributes<C, React.ComponentPropsWithoutRef<C>>;
 
 /**
@@ -21,7 +21,7 @@ export type PropsOf<
  */
 export type ExtendableProps<
   ExtendedProps = Record<string, unknown>,
-  OverrideProps = Record<string, unknown>
+  OverrideProps = Record<string, unknown>,
 > = OverrideProps & Omit<ExtendedProps, keyof OverrideProps>;
 
 /**
@@ -31,7 +31,7 @@ export type ExtendableProps<
  */
 export type InheritableElementProps<
   C extends React.ElementType,
-  Props = Record<string, unknown>
+  Props = Record<string, unknown>,
 > = ExtendableProps<PropsOf<C>, Props>;
 
 export type PolymorphicRef<C extends React.ElementType> =
@@ -39,12 +39,12 @@ export type PolymorphicRef<C extends React.ElementType> =
 
 export type PolymorphicComponentProps<
   C extends React.ElementType,
-  Props = Record<string, unknown>
+  Props = Record<string, unknown>,
 > = InheritableElementProps<C, Props>;
 
 export type PolymorphicComponentPropsWithRef<
   C extends React.ElementType,
-  Props = Record<string, unknown>
+  Props = Record<string, unknown>,
 > = PolymorphicComponentProps<C, Props> & { ref?: PolymorphicRef<C> };
 
 /**
@@ -54,7 +54,7 @@ export type PolymorphicComponentPropsWithRef<
 
 export type PolymorphicComponent<
   E extends React.ElementType,
-  V extends variantsType | object
+  V extends variantsType | object,
 > = React.FC<PolymorphicComponentPropsWithRef<E, VariantOptions<V>>>;
 
 /**
@@ -75,7 +75,7 @@ export interface CSSComponentConfig<V> {
  */
 export type VariantProps<
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  C extends keyof JSX.IntrinsicElements | JSXElementConstructor<any>
+  C extends keyof JSX.IntrinsicElements | JSXElementConstructor<any>,
 > = React.ComponentProps<C>;
 
 /**
