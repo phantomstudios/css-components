@@ -1,7 +1,7 @@
 import fs from "fs";
 import { extname } from "path";
 
-import globTool from "glob-promise";
+import { glob } from "glob";
 import sass from "sass";
 
 type KeyValuePair = { [key: string]: string };
@@ -129,4 +129,4 @@ export const generateOutput = (config: Config, cssFilename: string) => {
   return s;
 };
 
-export const findFiles = (glob: string) => globTool(glob);
+export const findFiles = (pattern: string) => glob(pattern);
