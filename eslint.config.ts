@@ -4,21 +4,24 @@ import tsparser from '@typescript-eslint/parser';
 // @ts-ignore - Plugin doesn't have proper ESLint 9 types yet
 import importPlugin from 'eslint-plugin-import';
 // @ts-ignore - Plugin doesn't have proper ESLint 9 types yet
-import prettier from 'eslint-plugin-prettier';
-// @ts-ignore - Plugin doesn't have proper ESLint 9 types yet
 import react from 'eslint-plugin-react';
 // @ts-ignore - Plugin doesn't have proper ESLint 9 types yet
 import reactHooks from 'eslint-plugin-react-hooks';
+import prettierConfig from 'eslint-config-prettier';
 
 export default [
+  // Base recommended configurations
   js.configs.recommended,
+  
+  // TypeScript configuration for all TypeScript files
   {
-    files: ['src/**/*.{js,jsx,ts,tsx}'],
+    files: ['src/**/*.{ts,tsx}'],
     languageOptions: {
       parser: tsparser,
       parserOptions: {
         ecmaVersion: 'latest',
         sourceType: 'module',
+        project: './tsconfig.json',
         ecmaFeatures: {
           jsx: true,
         },
@@ -30,37 +33,100 @@ export default [
     },
     plugins: {
       '@typescript-eslint': tseslint,
+    },
+    rules: {
+      // Disable core ESLint rules that are covered by TypeScript
+      'no-unused-vars': 'off',
+      'no-undef': 'off', // TypeScript handles this
+      
+      // Apply TypeScript ESLint recommended rules
+      ...tseslint.configs.recommended.rules,
+      // Override specific rules for our project needs
+      '@typescript-eslint/ban-ts-comment': 'off',
+      '@typescript-eslint/no-explicit-any': 'warn',
+    },
+  },
+
+  // Node.js CLI configuration
+  {
+    files: ['src/cli/**/*.{ts,tsx}'],
+    languageOptions: {
+      parser: tsparser,
+      parserOptions: {
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+        project: './tsconfig.json',
+      },
+      globals: {
+        // Node.js globals for CLI scripts
+        process: 'readonly',
+        console: 'readonly',
+        Buffer: 'readonly',
+        __dirname: 'readonly',
+        __filename: 'readonly',
+        module: 'readonly',
+        require: 'readonly',
+        exports: 'writable',
+        global: 'readonly',
+      },
+    },
+    plugins: {
+      '@typescript-eslint': tseslint,
+    },
+    rules: {
+      'no-unused-vars': 'off',
+      'no-undef': 'off',
+      ...tseslint.configs.recommended.rules,
+      '@typescript-eslint/ban-ts-comment': 'off',
+      '@typescript-eslint/no-explicit-any': 'warn',
+    },
+  },
+  
+  // React configuration
+  {
+    files: ['src/**/*.{js,jsx,ts,tsx}'],
+    languageOptions: {
+      parser: tsparser,
+      parserOptions: {
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+        project: './tsconfig.json',
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+      globals: {
+        React: 'writable',
+      },
+    },
+    plugins: {
       react,
       'react-hooks': reactHooks,
       import: importPlugin,
-      prettier,
     },
     settings: {
       react: {
         version: 'detect',
       },
+      'import/resolver': {
+        typescript: {
+          project: './tsconfig.json',
+        },
+        node: {
+          extensions: ['.js', '.jsx', '.ts', '.tsx'],
+        },
+      },
     },
     rules: {
-      // Core ESLint rules
-      'no-unused-vars': 'off', // Replaced by TypeScript version
-      'no-undef': 'off', // TypeScript handles this
+      // Apply React recommended rules
+      ...react.configs.recommended.rules,
+      ...react.configs['jsx-runtime'].rules,
       
-      // TypeScript ESLint rules
-      '@typescript-eslint/no-unused-vars': 'error',
-      '@typescript-eslint/explicit-function-return-type': 'off',
-      '@typescript-eslint/explicit-module-boundary-types': 'off',
-      '@typescript-eslint/ban-ts-comment': 'off',
-      '@typescript-eslint/no-explicit-any': 'warn',
+      // Apply React Hooks recommended rules
+      ...reactHooks.configs.recommended.rules,
       
-      // React rules
-      'react/react-in-jsx-scope': 'off',
-      'react/prop-types': 'off',
-      
-      // React Hooks rules
-      'react-hooks/rules-of-hooks': 'error',
-      'react-hooks/exhaustive-deps': 'error',
-      
-      // Import rules
+      // Apply Import recommended rules with custom order
+      'import/no-unresolved': 'off', // TypeScript handles this
       'import/order': [
         'error',
         {
@@ -80,9 +146,9 @@ export default [
           },
         },
       ],
-      
-      // Prettier rules
-      'prettier/prettier': 'error',
     },
   },
+  
+  // Prettier configuration (disables conflicting rules)
+  prettierConfig,
 ];
