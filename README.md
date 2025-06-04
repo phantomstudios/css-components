@@ -258,7 +258,7 @@ type PrimaryType = ButtonVariants["primary"];
 
 ## CLI Tool (Experimental)
 
-We have included a CLI tool that allows you to generate components from CSS and SCSS files which confirm to a specific naming convention. This is highly experimental and is subject to change.
+We have included a CLI tool that allows you to generate components from CSS and SCSS files which conform to a specific naming convention. This is highly experimental and is subject to change.
 
 Consider this CSS file:
 
@@ -294,7 +294,7 @@ nav.topBar {
 }
 ```
 
-You can generate a component from this files with the following command:
+You can generate a component from these files with the following command:
 
 ```bash
 # For CSS
