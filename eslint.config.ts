@@ -58,16 +58,9 @@ export default [
         project: './tsconfig.json',
       },
       globals: {
-        // Node.js globals for CLI scripts
+        // Only the Node.js globals actually used in CLI files
         process: 'readonly',
         console: 'readonly',
-        Buffer: 'readonly',
-        __dirname: 'readonly',
-        __filename: 'readonly',
-        module: 'readonly',
-        require: 'readonly',
-        exports: 'writable',
-        global: 'readonly',
       },
     },
     plugins: {
