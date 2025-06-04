@@ -50,7 +50,7 @@ findFiles(cssFile).then((files) => {
 
     fs.writeFileSync(outputPath, output);
     console.log(
-      `${Object.keys(config).length} components written to: ${outputPath}`
+      `${Object.keys(config).length} components written to: ${outputPath}`,
     );
   });
 });
